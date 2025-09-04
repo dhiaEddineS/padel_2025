@@ -1,0 +1,77 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>Padel Ranking</title>
+    <link rel="stylesheet" href="style.css">
+    <!-- 👇 charge app.js compilé, pas app.ts -->
+    <script  type="module" src="app.js" defer></script>
+</head>
+<body>
+<div class=".container">
+
+    <h1>Ligue du boss - Padel 2025/26</h1>
+    <div class="form-and-img">
+        <img src="ligue_boss.png">
+        <form id="matchForm">
+            <span>Selectionnez le résultat</span>
+            <select id="match-result-global">
+                <option value="">-- Select result --</option>
+                <option value="2-0">2-0</option>
+                <option value="2-1">2-1</option>
+                <option value="1-1">1-1 (3e set pas fini)</option>
+            </select>
+            <br>
+
+
+            <span id="team1">✅ Équipe vainqueur</span>
+            <div class="team1">
+                <select id="team1Player1"></select>
+                <select id="team1Player2"></select>
+            </div>
+
+
+            <span id="team2">❌ Équipe perdante</span>
+            <div class="team2">
+                <select id="team2Player1"></select>
+                <select id="team2Player2"></select>
+            </div>
+
+            <div id="match-result-details"></div>
+            <textarea id="matchComment" placeholder="Ajouter un commentaire (optionnel)"></textarea>
+            <button id="submitBtn" type="submit" disabled>Enregistrer le match</button>
+        </form>
+        <img src="ligue_boss.png">
+
+
+    </div>
+</div>
+
+<br>
+
+
+<div class="panel">
+    <div class="panel-header">Règles de la ligue</div>
+    <div class="panel-content">
+        <p class="regles">
+            - Le match se joue 2 sets gagnants.<br>
+            - Si le score est de 1-1, le 3e set n'est pas fini et le match est considéré comme nul.<br>
+            - Barème : [Vict 2-0 : 2 pts, Vict 2-1 : 1 pt , Nul 1-1 → 0.5 pt , Déf : 0 pt]<br>
+            - Un match est classé dans ligue du boss si au moins 2 joureurs de la ligue en font partie <br>
+            - Dans le cas d'un match abondonné apres un set à cause de diff de niveau, le score sera considéré 2-0 <br>
+            - Un seul match peut etre joué dans le créneau habituel de 1h30 <br>
+            - Les matchs des tournois ne font pas partie de la ligue <br>
+        </p>
+    </div>
+</div>
+
+<table id="rankingTable">
+    <tr><th>Name</th><th>Wins</th><th>Losses</th></tr>
+</table>
+
+<h2>Liste des matchs</h2>
+<div id="matchesList"></div>
+</body>
+</html>

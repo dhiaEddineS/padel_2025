@@ -1,0 +1,186 @@
+body {
+    font-family: Arial, sans-serif;
+    background-color: #1b1e1f;
+    color: #333;
+    margin: 20px;
+  }
+
+body {
+    margin: 0;
+    padding: 0;
+
+
+/*    background-color: #6e2c93; !* couleur principale *!
+    background-image: radial-gradient(circle, rgba(255, 255, 255, 0.4) 20%, transparent 20%);
+    background-size: 80px 80px; !* taille des cercles *!
+    background-repeat: repeat;*/
+}
+
+  h1 {
+    text-align: center;
+    color: #4CAF50;
+      font-family: cursive;
+  }
+
+  ul {
+    list-style-type: none;
+    padding: 0;
+  }
+
+  li {
+    font-size: 18px;
+    margin: 5px 0;
+    padding: 10px;
+    background-color: #e8f5e9;
+    border: 1px solid #c8e6c9;
+    border-radius: 5px;
+  }
+
+#set-wrapper {
+  margin-bottom: 10px;
+}
+.set-wrapper input {
+  width: 50px;
+  margin-left: 5px;
+  text-align: center;
+}
+
+th.position {
+  width: 20px;
+}
+table {
+  width: 100%;
+}
+
+html, body {
+  margin: 0;
+  padding: 0;
+  min-height: 100%;
+  overflow-y: auto; /* permet de scroller verticalement */
+}
+
+.match-item {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 10px;
+    border-bottom: 1px solid #ccc;
+    border : 2px solid black;
+    margin : 5px;
+    backgroundColor : "#f0f0f0";
+}
+
+.panel {
+    border: 1px solid #ccc;
+    border-radius: 8px;
+    margin: 10px 0;
+    overflow: hidden;
+}
+
+.panel-header {
+    background-color: #f5f5f5;
+    padding: 10px;
+    cursor: pointer;
+    font-weight: bold;
+}
+
+.panel-content {
+    max-height: 0;
+    overflow: hidden;
+    transition: max-height 0.3s ease, padding 0.3s ease;
+    padding: 0 10px;
+}
+
+.panel-content.open {
+    max-height: 200px; /* assez grand pour ton texte */
+
+    p {
+      font-family: cursive;
+    }
+}
+
+
+
+img {
+    max-width: 100px;
+    height: auto;
+    margin: auto;
+}
+
+.team1 , .team2 {
+    display: flex;
+    align-items: center;
+}
+
+.form-and-img {
+    display: flex;
+}
+
+.regles {
+  font-size: 12px;
+}
+
+table {
+  width: 100%;
+  border-collapse: collapse;
+  font-family: Arial, sans-serif;
+  font-size: 14px;
+}
+
+thead th {
+  background-color: #f3f4f6;
+  color: #333;
+  text-align: left;
+  padding: 10px;
+  border-bottom: 2px solid #ddd;
+}
+
+tbody tr {
+  border-bottom: 1px solid #e5e7eb;
+}
+
+tbody tr:nth-child(even) {
+  background-color: #f9fafb;
+}
+
+tbody td {
+  padding: 10px;
+  color: #111827;
+}
+
+tbody tr:hover {
+  background-color: #e0f2fe;
+  transition: 0.2s;
+}
+
+/* Première colonne (position) centrée */
+td:first-child {
+  text-align: center;
+  font-weight: bold;
+}
+
+/* Colonne joueur en gras */
+td.player {
+  font-weight: 600;
+}
+
+/* Mettre en avant les points */
+td.P {
+  color: #2563eb;
+  font-weight: bold;
+}
+
+form {
+  margin: auto;
+}
+
+select, input[type="text"], textarea {
+  width: 100%;
+  padding: 10px;
+  // margin-bottom: 12px;
+  border: 1px solid #d1d5db;
+  border-radius: 8px;
+  background: #f9fafb;
+  font-size: 14px;
+  transition: border 0.2s,
+}

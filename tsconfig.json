@@ -1,0 +1,33 @@
+{
+  "compilerOptions": {
+    /* Language and Environment */
+    "target": "ES2020",                      /* Modern JS output */
+    "module": "NodeNext",                      /* Use native ES modules */
+    "moduleResolution": "NodeNext",              /* Node.js module resolution */
+    "lib": [
+      "ES2020",
+      "dom"
+    ],                       /* Standard library */
+
+    /* Interop */
+    "esModuleInterop": true,                 /* Allow default imports from CJS */
+    "allowSyntheticDefaultImports": true,    /* Ease import compatibility */
+
+    /* Output */     /* All compiled JS goes into dist */
+    "rootDir": ".",                          /* TS starts from project root */
+
+    /* Strictness */
+    "strict": true,                          /* Enable strict type-checking */
+    "forceConsistentCasingInFileNames": true,
+    "skipLibCheck": true
+  },
+  "include": [
+    "database.ts",
+    "server.ts",
+    "public/**/*"
+  ],
+  "exclude": [
+    "node_modules",
+    "dist"
+  ]
+}

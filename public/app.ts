@@ -259,7 +259,9 @@ async function loadMatches(): Promise<void> {
         return;
     }
 
-    matches.forEach(match => {
+    $("matches-list-title").innerHTML = `Liste des matchs (${matches.length})`;
+
+    matches.slice().reverse().forEach(match => {
         const div = document.createElement("div");
         div.className = "match-item";
         const getPlayerNames = (ids: (number | string)[]) => ids

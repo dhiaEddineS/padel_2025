@@ -7,12 +7,10 @@ body {
 body {
     margin: 0;
     padding: 0;
+}
 
-
-/*    background-color: #6e2c93; !* couleur principale *!
-    background-image: radial-gradient(circle, rgba(255, 255, 255, 0.4) 20%, transparent 20%);
-    background-size: 80px 80px; !* taille des cercles *!
-    background-repeat: repeat;*/
+.header {
+  display: flex;
 }
 
   h1 {
@@ -103,7 +101,7 @@ html, body {
 img {
     max-width: 100px;
     height: auto;
-    margin: auto;
+    // margin: auto;
 }
 
 .team1 , .team2 {
@@ -378,7 +376,7 @@ select, input[type="text"], textarea {
 
 .panel-content {
     font-size: 1.15rem;
-    color: #005c7a;
+    color: black;
     line-height: 1.7;
     padding: 8px 0;
 }
@@ -392,9 +390,140 @@ select, input[type="text"], textarea {
     margin-bottom: 8px;
 }
 
-.panel-content .regles::before {
-    content: "📜 ";
-    font-size: 1.3rem;
-    vertical-align: middle;
+
+#matches-list-title {
+    text-align: center;
+    color: #ff5e57;
+    font-size: 1.4rem;
+    margin-top: 32px;
+    font-family: 'Comic Sans MS', cursive, sans-serif;
+    letter-spacing: 1px;
+}
+
+#matchesList {
+    max-width: 600px;
+    margin: 24px auto;
+    padding: 0;
+}
+
+.match-item {
+    background: linear-gradient(90deg, #ffe29f 0%, #a0e7ff 100%);
+    border-radius: 14px;
+    box-shadow: 0 2px 8px #0001;
+    margin: 12px 0;
+    padding: 16px 18px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    font-family: 'Comic Sans MS', cursive, sans-serif;
+    font-size: 1.08rem;
+    color: black;
+    border: none;
+    transition: transform 0.2s, box-shadow 0.2s;
+}
+
+.match-item:hover {
+    transform: scale(1.03) rotate(-1deg);
+    box-shadow: 0 4px 16px #ffa99f55;
+    background: linear-gradient(90deg, #ffb347 0%, #a0e7ff 100%);
+    color: #ff5e57;
+}
+
+.match-item .score {
+    font-weight: bold;
+    color: #ff5e57;
+    font-size: 1.15rem;
+    margin: 0 12px;
+}
+
+.match-item .teams {
+    display: flex;
+    flex-direction: column;
+    gap: 2px;
+}
+
+.match-item .date {
+    font-size: 0.95rem;
+    color: #7a5c00;
+    font-style: italic;
+    margin-left: 16px;
+}
+
+#matchForm {
+    background: linear-gradient(90deg, #ffe29f 0%, #a0e7ff 100%);
+    border-radius: 18px;
+    box-shadow: 0 2px 12px #0002;
+    padding: 28px 24px;
+    max-width: 600px;
+    margin: 24px auto;
+    font-family: 'Comic Sans MS', cursive, sans-serif;
+    display: flex;
+    flex-direction: column;
+    gap: 16px;
+}
+
+#matchForm span {
+    font-size: 1.15rem;
+    color: #ff5e57;
+    font-weight: bold;
+    margin-bottom: 4px;
+    letter-spacing: 1px;
+}
+
+#matchForm select,
+#matchForm input,
+#matchForm textarea {
+    font-size: 1.08rem;
+    border-radius: 8px;
+    border: 2px solid #ffb347;
+    padding: 8px 12px;
+    margin-bottom: 8px;
+    background: #fffbe6;
+    transition: border 0.2s;
+    font-family: inherit;
+}
+
+#matchForm select:focus,
+#matchForm input:focus,
+#matchForm textarea:focus {
+    border-color: #1da1f2;
+    outline: none;
+}
+
+#matchForm .team1,
+#matchForm .team2 {
+    display: flex;
+    gap: 8px;
+    margin-bottom: 8px;
+}
+
+#matchForm #match-result-details {
+    margin: 8px 0;
+    color: #005c7a;
+    font-size: 1rem;
+}
+
+#matchForm textarea {
+    min-height: 48px;
+    resize: vertical;
+}
+
+#matchForm button[type="submit"] {
+    background: #ff5e57;
+    color: #fff;
+    font-weight: bold;
+    border: none;
+    border-radius: 8px;
+    padding: 10px 0;
+    font-size: 1.15rem;
+    box-shadow: 0 2px 8px #ffa99f55;
+    cursor: pointer;
+    transition: background 0.2s, transform 0.2s;
+}
+
+#matchForm button[type="submit"]:hover:enabled {
+    background: #1da1f2;
+    color: #fffbe6;
+    transform: scale(1.04) rotate(-2deg);
 }
 

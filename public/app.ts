@@ -29,7 +29,12 @@ async function loadRanking(): Promise<void> {
     let players: Player[] = await res.json();
     players = players.filter(p => p.isLocal);
 
-    players.sort((a, b) => (b.points) - (a.points));
+    players.sort((a, b) => {
+    if (b.points !== a.points) {
+        return b.points - a.points;
+    }
+    return a.matchesPlayed - b.matchesPlayed;
+});
 
     // Génération du tableau HTML
     const container = document.getElementById("rankingTable");

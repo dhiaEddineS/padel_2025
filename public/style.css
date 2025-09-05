@@ -183,3 +183,218 @@ select, input[type="text"], textarea {
   font-size: 14px;
   transition: border 0.2s,
 }
+
+/* Comparateur de joueurs */
+#compare-container {
+    background: linear-gradient(90deg, #ffe29f 0%, #ffa99f 100%);
+    border-radius: 16px;
+    box-shadow: 0 2px 12px #0002;
+    padding: 24px;
+    margin: 24px 0;
+    max-width: 600px;
+    margin-left: auto;
+    margin-right: auto;
+    font-family: 'Comic Sans MS', cursive, sans-serif;
+}
+
+#compare-container h2 {
+    text-align: center;
+    color: #ff5e57;
+    font-size: 2rem;
+    margin-bottom: 16px;
+    letter-spacing: 2px;
+}
+
+#compare-container select, #compareBtn {
+    font-size: 1.1rem;
+    margin: 0 8px 12px 8px;
+    padding: 6px 12px;
+    border-radius: 8px;
+    border: 2px solid #ffb347;
+    background: #fffbe6;
+    transition: box-shadow 0.2s;
+}
+
+#compareBtn {
+    background: #1da1f2;
+    color: #fff;
+    font-weight: bold;
+    cursor: pointer;
+    border: none;
+    box-shadow: 0 2px 6px #1da1f233;
+}
+#compareBtn:hover {
+    background: #ff5e57;
+    color: #fffbe6;
+    transform: scale(1.07) rotate(-2deg);
+}
+
+#compareResult {
+    margin-top: 18px;
+    padding: 12px;
+    border-radius: 12px;
+    background: #fffbe6;
+    box-shadow: 0 1px 6px #0001;
+    font-size: 1.1rem;
+    text-align: center;
+    position: relative;
+}
+
+#compareResult strong {
+    color: #ff5e57;
+    font-size: 1.2rem;
+    letter-spacing: 1px;
+}
+
+.compare-bar {
+    display: flex;
+    align-items: center;
+    margin: 18px 0 8px 0;
+    height: 24px;
+    border-radius: 12px;
+    overflow: hidden;
+    background: #eee;
+    box-shadow: 0 1px 4px #0001;
+}
+
+.compare-bar .bar1 {
+    background: linear-gradient(90deg, #ffc83d 60%, #ffe29f 100%);
+    height: 100%;
+    transition: width 0.5s cubic-bezier(.68,-0.55,.27,1.55);
+    display: flex;
+    align-items: center;
+    justify-content: flex-start;
+    font-weight: bold;
+    color: #7a5c00;
+    font-size: 1.1rem;
+    padding-left: 8px;
+}
+
+.compare-bar .bar2 {
+    background: linear-gradient(90deg, #1da1f2 60%, #a0e7ff 100%);
+    height: 100%;
+    transition: width 0.5s cubic-bezier(.68,-0.55,.27,1.55);
+    display: flex;
+    align-items: center;
+    justify-content: flex-end;
+    font-weight: bold;
+    color: #005c7a;
+    font-size: 1.1rem;
+    padding-right: 8px;
+}
+
+#compareResult .score-labels {
+    display: flex;
+    justify-content: space-between;
+    margin-top: 8px;
+    font-size: 1.2rem;
+}
+
+#compareResult .score-labels span {
+    font-weight: bold;
+    padding: 0 12px;
+}
+
+#compareResult .score-labels span:first-child::before {
+    content: "🏆 ";
+}
+#compareResult .score-labels span:last-child::before {
+    content: "🏆 ";
+}
+#compareResult .score-labels span:nth-child(2)::before {
+    content: "🤝 ";
+}
+
+#rankingTable {
+    width: 100%;
+    max-width: 600px;
+    margin: 32px auto 24px auto;
+    border-collapse: separate;
+    border-spacing: 0;
+    background: linear-gradient(90deg, #fffbe6 0%, #ffe29f 100%);
+    border-radius: 16px;
+    box-shadow: 0 2px 12px #0002;
+    overflow: hidden;
+    font-family: 'Comic Sans MS', cursive, sans-serif;
+}
+
+#rankingTable th, #rankingTable td {
+    padding: 12px 8px;
+    text-align: center;
+    font-size: 1.1rem;
+}
+
+#rankingTable th {
+    background: #ffb347;
+    color: #fff;
+    font-size: 1.15rem;
+    letter-spacing: 1px;
+    border-bottom: 2px solid #ffa99f;
+}
+
+#rankingTable tr:nth-child(even) td {
+    background: #fffbe6;
+}
+
+#rankingTable tr:nth-child(odd) td {
+    background: #ffe29f33;
+}
+
+#rankingTable td {
+    font-weight: bold;
+    border-bottom: 1px solid #ffa99f33;
+    transition: background 0.2s;
+}
+
+#rankingTable tr:hover td {
+    background: #ffa99f44;
+    color: #ff5e57;
+}
+
+#rankingTable tr:first-child th {
+    border-top-left-radius: 16px;
+    border-top-right-radius: 16px;
+}
+
+.panel {
+    background: linear-gradient(90deg, #a0e7ff 0%, #ffe29f 100%);
+    border-radius: 18px;
+    box-shadow: 0 2px 12px #0002;
+    margin: 32px auto;
+    max-width: 600px;
+    padding: 18px 24px;
+    font-family: 'Comic Sans MS', cursive, sans-serif;
+}
+
+.panel-header {
+    font-size: 1.5rem;
+    color: #ff5e57;
+    font-weight: bold;
+    text-align: center;
+    margin-bottom: 12px;
+    letter-spacing: 2px;
+    text-shadow: 1px 1px 0 #fffbe6;
+}
+
+.panel-content {
+    font-size: 1.15rem;
+    color: #005c7a;
+    line-height: 1.7;
+    padding: 8px 0;
+}
+
+.panel-content .regles {
+    margin: 0;
+    padding-left: 12px;
+}
+
+.panel-content .regles br {
+    margin-bottom: 8px;
+}
+
+.panel-content .regles::before {
+    content: "📜 ";
+    font-size: 1.3rem;
+    vertical-align: middle;
+}
+

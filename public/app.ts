@@ -179,6 +179,87 @@ async function recordMatch(match: Match): Promise<void> {
     await loadRanking();
 }
 
+async function comparePlayers() {
+    const select1 = $select("comparePlayer1") as HTMLSelectElement;
+    const select2 = $select("comparePlayer2") as HTMLSelectElement;
+    const resultDiv = $("compareResult") as HTMLElement;
+
+    const id1 = select1.value;
+    const id2 = select2.value;
+
+    if (!id1 || !id2 || id1 === id2) {
+        resultDiv.textContent = "Sélectionnez deux joueurs différents.";
+        return;
+    }
+
+    const res = await fetch("/matches");
+    const matches: Match[] = await res.json();
+
+    // Filtre les matchs où les deux joueurs sont adversaires
+    const confrontations = matches.filter(m =>
+        (
+            (m.team1.includes(id1) && m.team2.includes(id2)) ||
+            (m.team1.includes(id2) && m.team2.includes(id1))
+        )
+    );
+
+    if (confrontations.length === 0) {
+        resultDiv.textContent = "Aucune confrontation trouvée.";
+        return;
+    }
+
+    let wins1 = 0, wins2 = 0, draws = 0;
+    confrontations.forEach(m => {
+        if (m.winners.includes(id1) && m.winners.includes(id2)) {
+            draws++;
+        } else if (m.winners.includes(id1)) {
+            wins1++;
+        } else if (m.winners.includes(id2)) {
+            wins2++;
+        }
+    });
+
+resultDiv.innerHTML = `
+    <strong>Confrontations: ${confrontations.length}</strong><br>
+    <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:8px;">
+        <span style="font-weight:bold;">${select1.selectedOptions[0].text}</span>
+        <span style="font-weight:bold;">${select2.selectedOptions[0].text}</span>
+    </div>
+    <div class="compare-bar">
+        <div class="bar1" style="width:${wins1/(wins1+wins2+draws)*100 || 0}%;">${wins1 > 0 ? "🥇" : ""}</div>
+        <div class="bar2" style="width:${wins2/(wins1+wins2+draws)*100 || 0}%;">${wins2 > 0 ? "🥇" : ""}</div>
+    </div>
+    <div class="score-labels">
+        <span>${wins1}</span>
+        <span>Nuls: ${draws}</span>
+        <span>${wins2}</span>
+    </div>
+`;
+}
+
+async function populateCompareSelects() {
+    const players = await loadPlayers();
+    const select1 = $select("comparePlayer1");
+    const select2 = $select("comparePlayer2");
+
+    [select1, select2].forEach(select => {
+        select.innerHTML = "";
+        // option placeholder
+        const placeholder = document.createElement("option");
+        placeholder.value = "";
+        placeholder.textContent = "-- Sélectionner un joueur --";
+        placeholder.disabled = true;
+        placeholder.selected = true;
+        select.appendChild(placeholder);
+        players.forEach(player => {
+            const option = document.createElement("option");
+            option.value = player.id.toString();
+            option.textContent = player.name;
+            select.appendChild(option);
+        });
+    });
+}
+
 function initForm() {
     const form = $("matchForm") as HTMLFormElement;
     const passwordInput = $("matchPassword") as HTMLInputElement;
@@ -220,7 +301,9 @@ function initForm() {
 
 document.addEventListener("DOMContentLoaded", async () => {
     await populateSelects();
+    await populateCompareSelects();
     initForm();
+    $("compareBtn")?.addEventListener("click", comparePlayers);
 });
 
 function setupFormValidation() {

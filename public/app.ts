@@ -180,10 +180,20 @@ async function recordMatch(match: Match): Promise<void> {
 }
 
 function initForm() {
-    const form = document.getElementById("matchForm") as HTMLFormElement;
+    const form = $("matchForm") as HTMLFormElement;
+    const passwordInput = $("matchPassword") as HTMLInputElement;
+    const CORRECT_PASSWORD = "Boss06";
+
 
     form.addEventListener("submit", async e => {
         e.preventDefault();
+
+        if (passwordInput.value !== CORRECT_PASSWORD) {
+            alert("Mot de passe incorrect !");
+            passwordInput.value = "";
+            passwordInput.focus();
+            return;
+        }
 
         const match: Match = {
             id: 0,

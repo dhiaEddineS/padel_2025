@@ -382,6 +382,7 @@ document.querySelectorAll(".panel-header").forEach(header => {
     });
 });
 // Charger les matchs dès que la page est prête
+
 document.addEventListener("DOMContentLoaded", () => {
     loadMatches();
 });

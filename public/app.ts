@@ -46,10 +46,9 @@ async function loadRanking(): Promise<void> {
                 <tr>
                     <th class="position">P</th>
                     <th class="player">Joueur</th>
-                    <th class="MJ">MJ</th>
                     <th class="P">P</th>
-
-                    <th class="V-N-D">V-N-D</th>
+                    <th class="MJ">MJ</th>
+                    <th class="V-N-D">V-D</th>
                     <th class="SG">Sets</th>
                     <th class="SD">+/-</th>
                     <th class="winRate">Win%</th>
@@ -66,10 +65,10 @@ async function loadRanking(): Promise<void> {
             <tr ${p.isLocal ? 'style="background-color:#d1ffd1"' : ""}>
                 <td>${index + 1}</td>
                 <td class="player">${p.name}</td>
-                <td class="J">${p.matchesPlayed}</td>
                 <td class="P">${p.points}</td>
-                <td class="V">${p.wins}-${p.draws}-${p.losses}</td>
-                <td class="SG">${p.setsWon}-${p.setsLost}</td>
+                <td class="J">${p.matchesPlayed}</td>
+                <td class="V">${p.wins}-${p.losses}</td>
+                <td class="SG">${p.setsWon}:${p.setsLost}</td>
                 <td class="SD">${setDifference}</td>
                 <td class="winRate">${winRate}</td>
             </tr>
@@ -385,4 +384,15 @@ document.querySelectorAll(".panel-header").forEach(header => {
 
 document.addEventListener("DOMContentLoaded", () => {
     loadMatches();
+});
+
+document.addEventListener("DOMContentLoaded", () => {
+    const btn = document.getElementById("showMatchFormBtn");
+    const panel = document.getElementById("matchFormPanel");
+
+    btn?.addEventListener("click", () => {
+        if (panel) {
+            panel.style.display = panel.style.display === "none" ? "block" : "none";
+        }
+    });
 });

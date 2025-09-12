@@ -11,6 +11,7 @@ body {
 
 .header {
   display: flex;
+  justify-content: center;
 }
 
   h1 {
@@ -101,7 +102,6 @@ html, body {
 img {
     max-width: 100px;
     height: auto;
-    // margin: auto;
 }
 
 .team1 , .team2 {
@@ -200,6 +200,7 @@ select, input[type="text"], textarea {
     color: #ff5e57;
     font-size: 2rem;
     margin-bottom: 16px;
+    margin-top: 0;
     letter-spacing: 2px;
 }
 
@@ -525,5 +526,10 @@ select, input[type="text"], textarea {
     background: #1da1f2;
     color: #fffbe6;
     transform: scale(1.04) rotate(-2deg);
+}
+
+#matchFormPanel {
+    margin: 24px auto;
+    max-width: 600px;
 }
 

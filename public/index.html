@@ -15,52 +15,7 @@
         <h1>Ligue du Boss - Padel 2025/26</h1>
          <img src="ligue_boss.png">
     </div>
-
-    
-        <form id="matchForm">
-            <span>Selectionnez le résultat</span>
-            <select id="match-result-global">
-                <option value="">-- Select result --</option>
-                <option value="2-0">2-0</option>
-                <option value="2-1">2-1</option>
-                <option value="1-1">1-1 (3e set pas fini)</option>
-            </select>
-            <br>
-
-
-            <span id="team1">✅ Équipe vainqueur</span>
-            <div class="team1">
-                <select id="team1Player1"></select>
-                <select id="team1Player2"></select>
-            </div>
-
-
-            <span id="team2">❌ Équipe perdante</span>
-            <div class="team2">
-                <select id="team2Player1"></select>
-                <select id="team2Player2"></select>
-            </div>
-
-            <div id="match-result-details"></div>
-            <textarea id="matchComment" placeholder="Ajouter un commentaire (optionnel)"></textarea>
-            <input type="password" id="matchPassword" placeholder="Mot de passe" required>
-            <button id="submitBtn" type="submit" disabled>Enregistrer le match</button>
-        </form>
-
-
-
-
-
 <br>
-
-<div id="compare-container">
-    <h2>Comparer deux joueurs</h2>
-    <select id="comparePlayer1"></select>
-    <select id="comparePlayer2"></select>
-    <button id="compareBtn">Comparer</button>
-    <div id="compareResult"></div>
-</div>
-
 
 <div class="panel">
     <div class="panel-header">Règles de la ligue</div>
@@ -77,11 +32,54 @@
     </div>
 </div>
 
+<div id="compare-container">
+    <h2>Comparer deux joueurs</h2>
+    <select id="comparePlayer1"></select>
+    <select id="comparePlayer2"></select>
+    <button id="compareBtn">Comparer</button>
+    <div id="compareResult"></div>
+</div>
+
+
+
+
 <table id="rankingTable">
     <tr><th>Name</th><th>Wins</th><th>Losses</th></tr>
 </table>
 
-<h2 id="matches-list-title">Liste des matchs</h2>
+<div style="text-align:center;margin-top:24px;">
+    <h2 id="matches-list-title">Liste des matchs</h2>
+    <button id="showMatchFormBtn" title="Ajouter un match" style="margin-left:12px;font-size:1.5rem;padding:4px 12px;border-radius:50%;background:#ffb347;color:#fff;border:none;cursor:pointer;">+</button>
+</div>
+
+
+<div id="matchFormPanel" style="display:none;">
+    <form id="matchForm">
+        <span>Selectionnez le résultat</span>
+        <select id="match-result-global">
+            <option value="">-- Select result --</option>
+            <option value="2-0">2-0</option>
+            <option value="2-1">2-1</option>
+            <option value="1-1">1-1 (3e set pas fini)</option>
+        </select>
+        <br>
+        <span id="team1">✅ Équipe vainqueur</span>
+        <div class="team1">
+            <select id="team1Player1"></select>
+            <select id="team1Player2"></select>
+        </div>
+        <span id="team2">❌ Équipe perdante</span>
+        <div class="team2">
+            <select id="team2Player1"></select>
+            <select id="team2Player2"></select>
+        </div>
+        <div id="match-result-details"></div>
+        <textarea id="matchComment" placeholder="Ajouter un commentaire (optionnel)"></textarea>
+        <input type="password" id="matchPassword" placeholder="Mot de passe" required>
+        <button id="submitBtn" type="submit" disabled>Enregistrer le match</button>
+    </form>
+
+</div>
 <div id="matchesList"></div>
 </body>
 </html>

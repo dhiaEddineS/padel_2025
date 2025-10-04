@@ -74,12 +74,12 @@ async function loadRanking(): Promise<void> {
         // Récupérer les 3 derniers matchs du joueur
         const playerMatches = allMatches
             .filter(m => [...m.team1, ...m.team2].includes(p.id.toString()))
-            .slice(-3);
+            .slice(-4);
         // Pour chaque match, déterminer le résultat
         const resultIcons = playerMatches.map(m => {
-            if (m.score === '1-1') return '<span style="color:orange;font-size:1.2em;">&#x1F7E1;</span>'; // orange pour nul
-            if (m.winners.includes(p.id.toString())) return '<span style="color:green;font-size:1.2em;">&#x2705;</span>'; // vert pour victoire
-            return '<span style="color:red;font-size:1.2em;">&#x274C;</span>'; // rouge pour défaite
+            if (m.score === '1-1') return '<span style="color:orange;font-size:0.8em;">&#x1F7E1;</span>'; // orange pour nul
+            if (m.winners.includes(p.id.toString())) return '<span style="color:green;font-size:0.8em;">&#x2705;</span>'; // vert pour victoire
+            return '<span style="color:red;font-size:0.8em;">&#x274C;</span>'; // rouge pour défaite
         }).join('');
 
         html += `

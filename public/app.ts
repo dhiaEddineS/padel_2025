@@ -61,7 +61,7 @@ async function loadRanking(): Promise<void> {
                     <th class="V-N-D">N</th>
                     <th class="SG">Sets</th>
                     <th class="winRate">Win%</th>
-                    <th class="lastResults">Derniers</th>
+                    <th class="lastResults">Last3</th>
                 </tr>
             </thead>
             <tbody>
@@ -74,7 +74,7 @@ async function loadRanking(): Promise<void> {
         // Récupérer les 3 derniers matchs du joueur
         const playerMatches = allMatches
             .filter(m => [...m.team1, ...m.team2].includes(p.id.toString()))
-            .slice(-4);
+            .slice(-3);
         // Pour chaque match, déterminer le résultat
         const resultIcons = playerMatches.map(m => {
             if (m.score === '1-1') return '<span style="color:orange;font-size:0.8em;">&#x1F7E1;</span>'; // orange pour nul

@@ -1,3 +1,49 @@
+.confrontation-list {
+    margin-top: 16px;
+    padding: 8px 8px;
+    background: #fffbe6;
+    border-radius: 8px;
+    box-shadow: none;
+    font-size: 1.04rem;
+    font-family: 'Comic Sans MS', cursive, sans-serif;
+    border: 1px solid #ffb347;
+}
+.confrontation-item {
+    display: flex;
+    align-items: center;
+    justify-content: flex-start;
+    gap: 8px;
+    padding: 2px 0;
+    border-bottom: 1px solid #ffa99f33;
+    background: none;
+    border-radius: 0;
+    margin-bottom: 0;
+}
+.confrontation-item:last-child {
+    border-bottom: none;
+}
+.confrontation-team {
+    font-weight: bold;
+    color: #1da1f2;
+    font-size: 1.08em;
+    background: #e0f2fe;
+    padding: 2px 8px;
+    border-radius: 6px;
+    box-shadow: 0 1px 4px #1da1f233;
+}
+.confrontation-score {
+    font-weight: bold;
+    color: #ff5e57;
+    font-size: 1.18em;
+    background: #fffbe6;
+    padding: 2px 12px;
+    border-radius: 8px;
+    box-shadow: 0 1px 4px #ffa99f33;
+    letter-spacing: 2px;
+    text-align: center;
+    min-width: 60px;
+    display: inline-block;
+}
 body {
     font-family: Arial, sans-serif;
     color: #333;

@@ -29,12 +29,21 @@ async function loadRanking(): Promise<void> {
     let players: Player[] = await res.json();
     players = players.filter(p => p.isLocal);
 
+    // Charger tous les matchs
+    const matchesRes = await fetch("/matches");
+    const allMatches: Match[] = await matchesRes.json();
+
     players.sort((a, b) => {
-    if (b.points !== a.points) {
-        return b.points - a.points;
-    }
-    return a.matchesPlayed - b.matchesPlayed;
-});
+        if (b.points !== a.points) {
+            return b.points - a.points;
+        }
+        const setDiffA = a.setsWon - a.setsLost;
+        const setDiffB = b.setsWon - b.setsLost;
+        if (setDiffB !== setDiffA) {
+            return setDiffB - setDiffA;
+        }
+        return a.matchesPlayed - b.matchesPlayed;
+    });
 
     // Génération du tableau HTML
     const container = document.getElementById("rankingTable");
@@ -46,12 +55,13 @@ async function loadRanking(): Promise<void> {
                 <tr>
                     <th class="position">P</th>
                     <th class="player">Joueur</th>
-                    <th class="P">P</th>
+                    <th class="P">Pts</th>
                     <th class="MJ">MJ</th>
                     <th class="V-N-D">V-D</th>
+                    <th class="V-N-D">N</th>
                     <th class="SG">Sets</th>
-                    <th class="SD">+/-</th>
                     <th class="winRate">Win%</th>
+                    <th class="lastResults">Derniers</th>
                 </tr>
             </thead>
             <tbody>
@@ -61,16 +71,28 @@ async function loadRanking(): Promise<void> {
         const winRate = p.matchesPlayed > 0 ? ((p.wins / p.matchesPlayed) * 100).toFixed(0) : '0';
         const setDifference = p.setsWon - p.setsLost;
 
+        // Récupérer les 3 derniers matchs du joueur
+        const playerMatches = allMatches
+            .filter(m => [...m.team1, ...m.team2].includes(p.id.toString()))
+            .slice(-3);
+        // Pour chaque match, déterminer le résultat
+        const resultIcons = playerMatches.map(m => {
+            if (m.score === '1-1') return '<span style="color:orange;font-size:1.2em;">&#x1F7E1;</span>'; // orange pour nul
+            if (m.winners.includes(p.id.toString())) return '<span style="color:green;font-size:1.2em;">&#x2705;</span>'; // vert pour victoire
+            return '<span style="color:red;font-size:1.2em;">&#x274C;</span>'; // rouge pour défaite
+        }).join('');
+
         html += `
             <tr ${p.isLocal ? 'style="background-color:#d1ffd1"' : ""}>
                 <td>${index + 1}</td>
                 <td class="player">${p.name}</td>
-                <td class="P">${p.points}</td>
+                <td class="P">${Math.floor(p.points)}</td>
                 <td class="J">${p.matchesPlayed}</td>
                 <td class="V">${p.wins}-${p.losses}</td>
+                <td class="SG">${p.draws}</td>
                 <td class="SG">${p.setsWon}:${p.setsLost}</td>
-                <td class="SD">${setDifference}</td>
                 <td class="winRate">${winRate}</td>
+                <td class="lastResults">${resultIcons}</td>
             </tr>
             `;
     });
@@ -209,7 +231,7 @@ async function comparePlayers() {
 
     let wins1 = 0, wins2 = 0, draws = 0;
     confrontations.forEach(m => {
-        if (m.winners.includes(id1) && m.winners.includes(id2)) {
+        if (m.score === "1-1") {
             draws++;
         } else if (m.winners.includes(id1)) {
             wins1++;
@@ -218,22 +240,45 @@ async function comparePlayers() {
         }
     });
 
-resultDiv.innerHTML = `
-    <strong>Confrontations: ${confrontations.length}</strong><br>
-    <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:8px;">
-        <span style="font-weight:bold;">${select1.selectedOptions[0].text}</span>
-        <span style="font-weight:bold;">${select2.selectedOptions[0].text}</span>
-    </div>
-    <div class="compare-bar">
-        <div class="bar1" style="width:${wins1/(wins1+wins2+draws)*100 || 0}%;">${wins1 > 0 ? "🥇" : ""}</div>
-        <div class="bar2" style="width:${wins2/(wins1+wins2+draws)*100 || 0}%;">${wins2 > 0 ? "🥇" : ""}</div>
-    </div>
-    <div class="score-labels">
-        <span>${wins1}</span>
-        <span>Nuls: ${draws}</span>
-        <span>${wins2}</span>
-    </div>
-`;
+    // Affichage des confrontations ligne par ligne
+    const players = await loadPlayers();
+    function getPlayerNames(ids: string[]) {
+        return ids.map(id => {
+            if (typeof id === 'string' && id.endsWith('_custom')) {
+                return id.replace('_custom', '');
+            }
+            const player = players.find(p => p.id == id);
+            return player ? player.name : id;
+        }).join(', ');
+    }
+    const total = wins1 + wins2 + draws;
+    const confrontationList = confrontations.slice().reverse().map(m => {
+        const team1Names = getPlayerNames(m.team1);
+        const team2Names = getPlayerNames(m.team2);
+        return `<div class='confrontation-item'>
+            <span class='confrontation-team'>[${team1Names}]</span>
+            <span class='confrontation-score'>${m.score}</span>
+            <span class='confrontation-team'>[${team2Names}]</span>
+        </div>`;
+    }).join('');
+
+    resultDiv.innerHTML = `
+        <strong>Confrontations: ${confrontations.length}</strong><br>
+        <div style='display:flex;align-items:center;justify-content:space-between;margin-bottom:8px;'>
+            <span style='font-weight:bold;'>${select1.selectedOptions[0].text}</span>
+            <span style='font-weight:bold;'>${select2.selectedOptions[0].text}</span>
+        </div>
+        <div class='compare-bar'>
+            <div class='bar1' style='width:${total ? (wins1/total)*100 : 0}%;'>${wins1 > 0 ? "🥇" : ""}</div>
+            <div class='bar2' style='width:${total ? (wins2/total)*100 : 0}%;'>${wins2 > 0 ? "🥇" : ""}</div>
+        </div>
+        <div class='score-labels'>
+            <span>${wins1}</span>
+            <span>Nuls: ${draws}</span>
+            <span>${wins2}</span>
+        </div>
+        <div class='confrontation-list'>${confrontationList}</div>
+    `;
 }
 
 async function populateCompareSelects() {

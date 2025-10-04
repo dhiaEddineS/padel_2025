@@ -255,9 +255,9 @@ async function comparePlayers() {
         const team1Names = getPlayerNames(m.team1);
         const team2Names = getPlayerNames(m.team2);
         return `<div class='confrontation-item'>
-            <span class='confrontation-team'>[${team1Names}]</span>
+            <span class='confrontation-team'>${team1Names}</span>
             <span class='confrontation-score'>${m.score}</span>
-            <span class='confrontation-team'>[${team2Names}]</span>
+            <span class='confrontation-team'>${team2Names}</span>
         </div>`;
     }).join('');
 

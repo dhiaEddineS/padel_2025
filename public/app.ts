@@ -146,7 +146,6 @@ async function populateSelects() {
         otherOption.value = "other";
         otherOption.textContent = "Autre...";
         select.appendChild(otherOption);
-        console.log(otherOption, "added to", select);
 
         // vérifier si un input custom existe déjà sinon le créer
         let customInput = document.getElementById(id + "_custom") as HTMLInputElement;
@@ -247,7 +246,7 @@ async function comparePlayers() {
             if (typeof id === 'string' && id.endsWith('_custom')) {
                 return id.replace('_custom', '');
             }
-            const player = players.find(p => p.id == id);
+            const player = players.find(p => p.id.toString() == id);
             return player ? player.name : id;
         }).join(', ');
     }

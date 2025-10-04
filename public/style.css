@@ -364,7 +364,7 @@ select, input[type="text"], textarea {
 }
 
 #rankingTable th, #rankingTable td {
-    padding: 4px 2px;
+    padding: 12px 2px;
     text-align: center;
     font-size: 1.1rem;
 }

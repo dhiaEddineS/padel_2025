@@ -247,17 +247,36 @@ async function comparePlayers() {
                 return id.replace('_custom', '');
             }
             const player = players.find(p => p.id.toString() == id);
-            return player ? player.name : id;
-        }).join(', ');
+            if (player) {
+                if (player.name === 'Le Boss') return 'Boss';
+                return player.name;
+            }
+            return id;
+        }).join(',');
     }
     const total = wins1 + wins2 + draws;
     const confrontationList = confrontations.slice().reverse().map(m => {
-        const team1Names = getPlayerNames(m.team1);
-        const team2Names = getPlayerNames(m.team2);
+        let leftTeam, rightTeam, score = m.score;
+        let leftWinners;
+        if (m.team1.includes(id1) && m.team2.includes(id2)) {
+            leftTeam = getPlayerNames(m.team1);
+            rightTeam = getPlayerNames(m.team2);
+            leftWinners = m.winners.some(w => m.team1.includes(w));
+        } else {
+            leftTeam = getPlayerNames(m.team2);
+            rightTeam = getPlayerNames(m.team1);
+            leftWinners = m.winners.some(w => m.team2.includes(w));
+        }
+        let scoreDisplayed: string = score;
+        // Inverser le score si la victoire est du côté droit
+        if (!leftWinners && score !== '1-1') {
+            if (score === '2-0') scoreDisplayed = '0-2';
+            else if (score === '2-1') scoreDisplayed = '1-2';
+        }
         return `<div class='confrontation-item'>
-            <span class='confrontation-team'>${team1Names}</span>
-            <span class='confrontation-score'>${m.score}</span>
-            <span class='confrontation-team'>${team2Names}</span>
+            <span class='confrontation-team'>${leftTeam}</span>
+            <span class='confrontation-score'>${scoreDisplayed}</span>
+            <span class='confrontation-team'>${rightTeam}</span>
         </div>`;
     }).join('');
 
@@ -292,7 +311,6 @@ async function populateCompareSelects() {
         placeholder.value = "";
         placeholder.textContent = "-- Sélectionner un joueur --";
         placeholder.disabled = true;
-        placeholder.selected = true;
         select.appendChild(placeholder);
         players.forEach(player => {
             const option = document.createElement("option");
@@ -301,6 +319,10 @@ async function populateCompareSelects() {
             select.appendChild(option);
         });
     });
+
+    // Sélection par défaut id=1 et id=5
+    select1.value = "1"; // Le Boss
+    select2.value = "5"; // Walid
 }
 
 function initForm() {

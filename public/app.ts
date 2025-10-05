@@ -1,3 +1,139 @@
+
+
+// Statistiques Ligue
+
+async function showLeagueStats() {
+    const players = await loadPlayers();
+    if (!players.length) return;
+    // Trouver le joueur ayant joué le plus de matchs
+    const mostPlayed = players.reduce((max, p) => p.matchesPlayed > max.matchesPlayed ? p : max, players[0]);
+
+    // Charger tous les matchs pour calculer les séries de victoires
+    const matchesRes = await fetch("/matches");
+    const allMatches = await matchesRes.json();
+
+
+    // Fonction pour calculer la plus longue série de victoires d'un joueur
+    function getMaxWinStreak(playerId: string) {
+        const playerMatches = (allMatches as Match[])
+            .filter((m: Match) => [...m.team1, ...m.team2].includes(playerId))
+            .sort((a: Match, b: Match) => a.id - b.id);
+        let maxStreak = 0, currentStreak = 0;
+        for (const m of playerMatches) {
+            if (m.winners && m.winners.includes(playerId) && m.score !== '1-1') {
+                currentStreak++;
+                maxStreak = Math.max(maxStreak, currentStreak);
+            } else {
+                currentStreak = 0;
+            }
+        }
+        return maxStreak;
+    }
+
+    // Fonction pour calculer la plus longue série de défaites d'un joueur
+    function getMaxLoseStreak(playerId: string) {
+        const playerMatches = (allMatches as Match[])
+            .filter((m: Match) => [...m.team1, ...m.team2].includes(playerId))
+            .sort((a: Match, b: Match) => a.id - b.id);
+        let maxStreak = 0, currentStreak = 0;
+        for (const m of playerMatches) {
+            // Défaite = le joueur n'est pas dans les winners et le score n'est pas nul
+            if (m.winners && !m.winners.includes(playerId) && m.score !== '1-1') {
+                currentStreak++;
+                maxStreak = Math.max(maxStreak, currentStreak);
+            } else {
+                currentStreak = 0;
+            }
+        }
+        return maxStreak;
+    }
+
+
+    // Calculer la plus longue série de victoires pour chaque joueur
+    let bestStreak = 0;
+    let bestPlayer = players[0];
+    for (const p of players) {
+        const streak = getMaxWinStreak(p.id.toString());
+        if (streak > bestStreak) {
+            bestStreak = streak;
+            bestPlayer = p;
+        }
+    }
+
+    // Calculer la plus longue série de défaites pour chaque joueur
+    let worstStreak = 0;
+    let worstPlayer = players[0];
+    for (const p of players) {
+        const streak = getMaxLoseStreak(p.id.toString());
+        if (streak > worstStreak) {
+            worstStreak = streak;
+            worstPlayer = p;
+        }
+    }
+
+
+    // Joueur ayant fait le plus de matchs nuls
+    let mostDrawsPlayer = players[0];
+    let mostDraws = players[0].draws || 0;
+    for (const p of players) {
+        if ((p.draws || 0) > mostDraws) {
+            mostDraws = p.draws;
+            mostDrawsPlayer = p;
+        }
+    }
+
+        // Joueur ayant perdu le plus de matchs sur le score 2-0
+    let mostLost20Player = players[0];
+    let mostLost20 = 0;
+    for (const p of players) {
+        const lost20 = (allMatches as Match[])
+            .filter((m: Match) => [...m.team1, ...m.team2].includes(p.id.toString()) && m.score === '2-0' && m.winners && !m.winners.includes(p.id.toString())).length;
+        if (lost20 > mostLost20) {
+            mostLost20 = lost20;
+            mostLost20Player = p;
+        }
+    }
+
+        // Joueur ayant gagné le plus de matchs sur le score 2-0
+    let mostWin20Player = players[0];
+    let mostWin20 = 0;
+    for (const p of players) {
+        const win20 = (allMatches as Match[])
+            .filter((m: Match) => [...m.team1, ...m.team2].includes(p.id.toString()) && m.score === '2-0' && m.winners && m.winners.includes(p.id.toString())).length;
+        if (win20 > mostWin20) {
+            mostWin20 = win20;
+            mostWin20Player = p;
+        }
+    }
+
+    const statsDiv = document.getElementById("stats-content");
+    if (statsDiv) {
+        statsDiv.innerHTML = `
+            <div class='league-stats-content'>
+                <span class='league-stats-label'>Joueur le plus actif :</span> <span class='league-stats-player'>${mostPlayed.name}</span> <span class='league-stats-count'>(Matchs joués : ${mostPlayed.matchesPlayed})</span>
+            </div>
+            <div class='league-stats-content'>
+                <span class='league-stats-label'>Meilleure série de victoires :</span> <span class='league-stats-player'>${bestPlayer.name}</span> <span class='league-stats-count'>(Série : ${bestStreak})</span>
+            </div>
+            <div class='league-stats-content'>
+                <span class='league-stats-label'>Pire série de défaites :</span> <span class='league-stats-player'>${worstPlayer.name}</span> <span class='league-stats-count'>(Série : ${worstStreak})</span>
+            </div>
+            <div class='league-stats-content'>
+                <span class='league-stats-label'>Roi du match nul :</span> <span class='league-stats-player'>${mostDrawsPlayer.name}</span> <span class='league-stats-count'>(Matchs nuls : ${mostDraws})</span>
+            </div>
+            <div class='league-stats-content'>
+                <span class='league-stats-label'>Recordman des défaites 2-0 :</span> <span class='league-stats-player'>${mostLost20Player.name}</span> <span class='league-stats-count'>(Défaites 2-0 : ${mostLost20})</span>
+            </div>
+            <div class='league-stats-content'>
+                <span class='league-stats-label'>Recordman des victoires 2-0 :</span> <span class='league-stats-player'>${mostWin20Player.name}</span> <span class='league-stats-count'>(Victoires 2-0 : ${mostWin20})</span>
+            </div>
+        `;
+    }
+}
+
+document.addEventListener("DOMContentLoaded", () => {
+    showLeagueStats();
+});
 import {Match, Player} from "../models/my.model.js";
 
 const $ = (id: string) => document.getElementById(id) as HTMLElement;

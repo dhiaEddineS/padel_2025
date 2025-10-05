@@ -234,6 +234,7 @@ select, input[type="text"], textarea {
     border-radius: 16px;
     box-shadow: 0 2px 12px #0002;
     padding: 24px;
+    padding-top: 8px;
     margin: 24px 0;
     max-width: 600px;
     margin-left: auto;
@@ -402,8 +403,7 @@ select, input[type="text"], textarea {
 }
 
 .panel {
-    background: linear-gradient(90deg, #a0e7ff 0%, #ffe29f 100%);
-    border-radius: 18px;
+    background: linear-gradient(90deg, #ffe29f 0%, #ffa99f 100%);
     box-shadow: 0 2px 12px #0002;
     margin: 32px auto;
     max-width: 600px;

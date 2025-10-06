@@ -581,5 +581,10 @@ select, input[type="text"], textarea {
 
 .league-stats-title {
     margin: 2px 0;
+    font-family: 'Segoe UI', 'Arial', 'Helvetica Neue', sans-serif;
+}
+
+.league-stats-label {
+    font-family: 'Segoe UI', 'Arial', 'Helvetica Neue', sans-serif;
 }
 

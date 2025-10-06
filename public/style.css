@@ -584,7 +584,11 @@ select, input[type="text"], textarea {
     font-family: 'Segoe UI', 'Arial', 'Helvetica Neue', sans-serif;
 }
 
-.league-stats-label {
+.league-stats-label , .league-stats-player , .league-stats-count {
     font-family: 'Segoe UI', 'Arial', 'Helvetica Neue', sans-serif;
+}
+
+.league-stats-player , .league-stats-count {
+    font-weight: bold;
 }
 

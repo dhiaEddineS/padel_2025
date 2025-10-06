@@ -149,10 +149,10 @@ async function showLeagueStats() {
     if (statsDiv) {
     statsDiv.innerHTML = `
             <div class='league-stats-content'>
-                <span class='league-stats-label'>Joueur le plus actif :</span> <span class='league-stats-player'>${mostPlayed.name}</span> <span class='league-stats-count'>(Matchs joués : ${mostPlayed.matchesPlayed})</span>
+                <span class='league-stats-label'>Joueur le plus actif :</span> <span class='league-stats-player'>${mostPlayed.name}</span> <span class='league-stats-count'>(${mostPlayed.matchesPlayed} Matchs)</span>
             </div>
             <div class='league-stats-content'>
-                <span class='league-stats-label'>Confrontation la plus répétée :</span> <span class='league-stats-player'>${maxConfrontPair[0].name} vs ${maxConfrontPair[1].name}</span> <span class='league-stats-count'>(${maxConfrontCount})</span>
+                <span class='league-stats-label'>Duel le plus fréquent :</span> <span class='league-stats-player'>${maxConfrontPair[0].name} vs ${maxConfrontPair[1].name}</span> <span class='league-stats-count'>(${maxConfrontCount})</span>
             </div>
             <div class='league-stats-content'>
                 <span class='league-stats-label'>Duo inséparable :</span> <span class='league-stats-player'>${maxPair[0].name} & ${maxPair[1].name}</span> <span class='league-stats-count'>(${maxPairCount} Matchs)</span>

@@ -155,16 +155,16 @@ async function showLeagueStats() {
                 <span class='league-stats-label'>Duel le plus fréquent :</span> <span class='league-stats-player'>${maxConfrontPair[0].name} vs ${maxConfrontPair[1].name}</span> <span class='league-stats-count'>(${maxConfrontCount})</span>
             </div>
             <div class='league-stats-content'>
-                <span class='league-stats-label'>Duo inséparable :</span> <span class='league-stats-player'>${maxPair[0].name} & ${maxPair[1].name}</span> <span class='league-stats-count'>(${maxPairCount} Matchs)</span>
+                <span class='league-stats-label'>Duo inséparable :</span> <span class='league-stats-player'>${maxPair[0].name} & ${maxPair[1].name}</span> <span class='league-stats-count'>(${maxPairCount})</span>
             </div>
             <div class='league-stats-content'>
-                <span class='league-stats-label'>Meilleure série de victoires :</span> <span class='league-stats-player'>${bestPlayer.name}</span> <span class='league-stats-count'>(Série : ${bestStreak})</span>
+                <span class='league-stats-label'>Meilleure série de victoires :</span> <span class='league-stats-player'>${bestPlayer.name}</span> <span class='league-stats-count'>(${bestStreak})</span>
             </div>
             <div class='league-stats-content'>
-                <span class='league-stats-label'>Pire série de défaites :</span> <span class='league-stats-player'>${worstPlayer.name}</span> <span class='league-stats-count'>(Série : ${worstStreak})</span>
+                <span class='league-stats-label'>Pire série de défaites :</span> <span class='league-stats-player'>${worstPlayer.name}</span> <span class='league-stats-count'>(${worstStreak})</span>
             </div>
             <div class='league-stats-content'>
-                <span class='league-stats-label'>Roi du match nul :</span> <span class='league-stats-player'>${mostDrawsPlayer.name}</span> <span class='league-stats-count'>(Matchs nuls : ${mostDraws})</span>
+                <span class='league-stats-label'>Roi du match nul :</span> <span class='league-stats-player'>${mostDrawsPlayer.name}</span> <span class='league-stats-count'>(${mostDraws})</span>
             </div>
             <div class='league-stats-content'>
                 <span class='league-stats-label'>Recordman des victoires 2-0 :</span> <span class='league-stats-player'>${mostWin20Player.name}</span> <span class='league-stats-count'>(${mostWin20})</span>

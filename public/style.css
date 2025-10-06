@@ -580,7 +580,7 @@ select, input[type="text"], textarea {
 }
 
 .league-stats-title {
-    margin: 2px 0;
+    margin: 2px 0 8px;
     font-family: 'Segoe UI', 'Arial', 'Helvetica Neue', sans-serif;
 }
 

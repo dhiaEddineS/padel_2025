@@ -592,3 +592,8 @@ select, input[type="text"], textarea {
     font-weight: bold;
 }
 
+.league-stats {
+    padding-left: 5px;
+    padding-right: 0;
+}
+

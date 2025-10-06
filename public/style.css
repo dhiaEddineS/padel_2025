@@ -579,3 +579,7 @@ select, input[type="text"], textarea {
     max-width: 600px;
 }
 
+.league-stats-title {
+    margin: 2px 0;
+}
+

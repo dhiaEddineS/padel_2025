@@ -3,14 +3,34 @@
 // Statistiques Ligue
 
 async function showLeagueStats() {
+
     const players = await loadPlayers();
     if (!players.length) return;
-    // Trouver le joueur ayant joué le plus de matchs
-    const mostPlayed = players.reduce((max, p) => p.matchesPlayed > max.matchesPlayed ? p : max, players[0]);
-
-    // Charger tous les matchs pour calculer les séries de victoires
     const matchesRes = await fetch("/matches");
     const allMatches = await matchesRes.json();
+
+    // Confrontation la plus répétée (entre 2 joueurs)
+    let maxConfrontCount = 0;
+    let maxConfrontPair: [Player, Player] = [players[0], players[0]];
+    for (let i = 0; i < players.length; i++) {
+        for (let j = i + 1; j < players.length; j++) {
+            const id1 = players[i].id.toString();
+            const id2 = players[j].id.toString();
+            // Compter le nombre de matchs où id1 et id2 sont dans des équipes opposées
+            const confrontCount = (allMatches as Match[])
+                .filter((m: Match) =>
+                    (m.team1.includes(id1) && m.team2.includes(id2)) ||
+                    (m.team1.includes(id2) && m.team2.includes(id1))
+                ).length;
+            if (confrontCount > maxConfrontCount) {
+                maxConfrontCount = confrontCount;
+                maxConfrontPair = [players[i], players[j]];
+            }
+        }
+    }
+
+    // Trouver le joueur ayant joué le plus de matchs
+    const mostPlayed = players.reduce((max, p) => p.matchesPlayed > max.matchesPlayed ? p : max, players[0]);
 
 
     // Fonction pour calculer la plus longue série de victoires d'un joueur
@@ -106,11 +126,36 @@ async function showLeagueStats() {
         }
     }
 
+        // Les deux joueurs ayant joué le plus de matchs ensemble
+    let maxPairCount = 0;
+    let maxPair: [Player, Player] = [players[0], players[0]];
+    for (let i = 0; i < players.length; i++) {
+        for (let j = i + 1; j < players.length; j++) {
+            const id1 = players[i].id.toString();
+            const id2 = players[j].id.toString();
+            const togetherCount = (allMatches as Match[])
+                .filter((m: Match) =>
+                    (m.team1.includes(id1) && m.team1.includes(id2)) ||
+                    (m.team2.includes(id1) && m.team2.includes(id2))
+                ).length;
+            if (togetherCount > maxPairCount) {
+                maxPairCount = togetherCount;
+                maxPair = [players[i], players[j]];
+            }
+        }
+    }
+
     const statsDiv = document.getElementById("stats-content");
     if (statsDiv) {
-        statsDiv.innerHTML = `
+    statsDiv.innerHTML = `
             <div class='league-stats-content'>
                 <span class='league-stats-label'>Joueur le plus actif :</span> <span class='league-stats-player'>${mostPlayed.name}</span> <span class='league-stats-count'>(Matchs joués : ${mostPlayed.matchesPlayed})</span>
+            </div>
+            <div class='league-stats-content'>
+                <span class='league-stats-label'>Confrontation la plus répétée :</span> <span class='league-stats-player'>${maxConfrontPair[0].name} vs ${maxConfrontPair[1].name}</span> <span class='league-stats-count'>(${maxConfrontCount})</span>
+            </div>
+            <div class='league-stats-content'>
+                <span class='league-stats-label'>Duo inséparable :</span> <span class='league-stats-player'>${maxPair[0].name} & ${maxPair[1].name}</span> <span class='league-stats-count'>(${maxPairCount} Matchs)</span>
             </div>
             <div class='league-stats-content'>
                 <span class='league-stats-label'>Meilleure série de victoires :</span> <span class='league-stats-player'>${bestPlayer.name}</span> <span class='league-stats-count'>(Série : ${bestStreak})</span>
@@ -122,10 +167,10 @@ async function showLeagueStats() {
                 <span class='league-stats-label'>Roi du match nul :</span> <span class='league-stats-player'>${mostDrawsPlayer.name}</span> <span class='league-stats-count'>(Matchs nuls : ${mostDraws})</span>
             </div>
             <div class='league-stats-content'>
-                <span class='league-stats-label'>Recordman des défaites 2-0 :</span> <span class='league-stats-player'>${mostLost20Player.name}</span> <span class='league-stats-count'>(Défaites 2-0 : ${mostLost20})</span>
+                <span class='league-stats-label'>Recordman des victoires 2-0 :</span> <span class='league-stats-player'>${mostWin20Player.name}</span> <span class='league-stats-count'>(${mostWin20})</span>
             </div>
             <div class='league-stats-content'>
-                <span class='league-stats-label'>Recordman des victoires 2-0 :</span> <span class='league-stats-player'>${mostWin20Player.name}</span> <span class='league-stats-count'>(Victoires 2-0 : ${mostWin20})</span>
+                <span class='league-stats-label'>Recordman des défaites 2-0 :</span> <span class='league-stats-player'>${mostLost20Player.name}</span> <span class='league-stats-count'>(${mostLost20})</span>
             </div>
         `;
     }

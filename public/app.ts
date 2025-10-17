@@ -145,6 +145,35 @@ async function showLeagueStats() {
         }
     }
 
+    // Joueur ayant gagné le plus souvent contre le Boss
+    // On cherche d'abord l'ID du Boss
+    const bossPlayer = players.find(p => p.name === "Le Boss");
+    const bossId = bossPlayer ? bossPlayer.id.toString() : null;
+
+    let bestVsBossCount = 0;
+    let bestVsBoss: Player | null = null;
+
+    if (bossId) {
+        for (const p of players) {
+            if (p.id.toString() === bossId) continue;
+            const winsAgainstBoss = (allMatches as Match[])
+                .filter((m: Match) =>
+                    // p et Boss doivent être dans des équipes opposées
+                    (
+                        (m.team1.includes(bossId) && m.team2.includes(p.id.toString())) ||
+                        (m.team2.includes(bossId) && m.team1.includes(p.id.toString()))
+                    )
+                    // p doit être dans winners (et pas de nul)
+                    && m.winners && m.winners.includes(p.id.toString())
+                    && m.score !== '1-1'
+                ).length;
+            if (winsAgainstBoss > bestVsBossCount) {
+                bestVsBossCount = winsAgainstBoss;
+                bestVsBoss = p;
+            }
+        }
+    }
+
     const statsDiv = document.getElementById("stats-content");
     if (statsDiv) {
     statsDiv.innerHTML = `
@@ -171,6 +200,11 @@ async function showLeagueStats() {
             </div>
             <div class='league-stats-content'>
                 <span class='league-stats-label'>Recordman des défaites 2-0 :</span> <span class='league-stats-player'>${mostLost20Player.name}</span> <span class='league-stats-count'>(${mostLost20})</span>
+            </div>
+            <div class='league-stats-content'>
+                <span class='league-stats-label'>Record victoires vs le Boss :</span>
+                <span class='league-stats-player'>${bestVsBoss ? bestVsBoss.name : 'Aucun'}</span>
+                <span class='league-stats-count'>(${bestVsBossCount})</span>
             </div>
         `;
     }
@@ -345,8 +379,6 @@ async function populateSelects() {
 
         container.appendChild(select);
         container.appendChild(customInput);
-
-        console.log(container, "created");
 
         // gérer l'affichage de l'input si "Autre..." est choisi
         select.addEventListener("change", () => {

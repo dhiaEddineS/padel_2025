@@ -255,6 +255,91 @@ export const defaultMatches : Match[] = [
             "8"
         ],
         "comment": "7-5 3-6 3-3 nul au goût de la défaite "
+    },
+    {
+        "id": 16,
+        "team1": [
+            "1",
+            "4"
+        ],
+        "team2": [
+            "6",
+            "5"
+        ],
+        "score": "2-1",
+        "winners": [
+            "1",
+            "4"
+        ],
+        "comment": "6-2 3-6 6-4 Partie chaude à l urban"
+    },
+    {
+        "id": 17,
+        "team1": [
+            "5",
+            "3"
+        ],
+        "team2": [
+            "1",
+            "4"
+        ],
+        "score": "2-0",
+        "winners": [
+            "5",
+            "3"
+        ],
+        "comment": "7-6 6-4 chfbbi en forme victoire méritée "
+    },
+    {
+        "id": 18,
+        "team1": [
+            "5",
+            "Paul_5_custom"
+        ],
+        "team2": [
+            "1",
+            "3"
+        ],
+        "score": "2-0",
+        "winners": [
+            "5",
+            "Paul_5_custom"
+        ],
+        "comment": "6-4 6-4 Match à sens unique"
+    },
+    {
+        "id": 19,
+        "team1": [
+            "1",
+            "6"
+        ],
+        "team2": [
+            "5",
+            "4"
+        ],
+        "score": "2-0",
+        "winners": [
+            "1",
+            "6"
+        ],
+        "comment": "6-4 6-3 Retour aux victoires"
+    },
+    {
+        "id": 20,
+        "team1": [
+            "Vito_custom",
+            "Niv5_custom"
+        ],
+        "team2": [
+            "5",
+            "7"
+        ],
+        "score": "2-0",
+        "winners": [
+            "Vito_custom",
+            "Niv5_custom"
+        ],
+        "comment": "6-0 6-0 6-0 Partie héroïque à Lubumbashi"
     }
 ];
 
@@ -262,13 +347,13 @@ export const defaultPlayers: Player[] = [
     {
         "id": 1,
         "name": "Le Boss",
-        "matchesPlayed": 9,
-        "points": 12.5,
-        "wins": 7,
-        "losses": 1,
+        "matchesPlayed": 13,
+        "points": 15.5,
+        "wins": 9,
+        "losses": 3,
         "draws": 1,
-        "setsWon": 15,
-        "setsLost": 5,
+        "setsWon": 19,
+        "setsLost": 10,
         "isLocal": true
     },
     {
@@ -286,61 +371,61 @@ export const defaultPlayers: Player[] = [
     {
         "id": 3,
         "name": "Idriss",
-        "matchesPlayed": 5,
-        "points": 5,
-        "wins": 3,
-        "losses": 2,
+        "matchesPlayed": 7,
+        "points": 7,
+        "wins": 4,
+        "losses": 3,
         "draws": 0,
-        "setsWon": 6,
-        "setsLost": 5,
+        "setsWon": 8,
+        "setsLost": 7,
         "isLocal": true
     },
     {
         "id": 4,
         "name": "Momo",
-        "matchesPlayed": 7,
-        "points": 4.5,
-        "wins": 3,
-        "losses": 3,
+        "matchesPlayed": 10,
+        "points": 5.5,
+        "wins": 4,
+        "losses": 5,
         "draws": 1,
-        "setsWon": 8,
-        "setsLost": 9,
+        "setsWon": 10,
+        "setsLost": 14,
         "isLocal": true
     },
     {
         "id": 5,
         "name": "Walid",
-        "matchesPlayed": 11,
-        "points": 6,
-        "wins": 3,
-        "losses": 6,
+        "matchesPlayed": 16,
+        "points": 10,
+        "wins": 5,
+        "losses": 9,
         "draws": 2,
-        "setsWon": 10,
-        "setsLost": 15,
+        "setsWon": 15,
+        "setsLost": 21,
         "isLocal": true
     },
     {
         "id": 6,
         "name": "Said",
-        "matchesPlayed": 5,
-        "points": 2.5,
-        "wins": 2,
-        "losses": 2,
+        "matchesPlayed": 7,
+        "points": 4.5,
+        "wins": 3,
+        "losses": 3,
         "draws": 1,
-        "setsWon": 6,
-        "setsLost": 7,
+        "setsWon": 9,
+        "setsLost": 9,
         "isLocal": true
     },
     {
         "id": 7,
         "name": "Haroun",
-        "matchesPlayed": 5,
+        "matchesPlayed": 6,
         "points": 5,
         "wins": 3,
-        "losses": 2,
+        "losses": 3,
         "draws": 0,
         "setsWon": 8,
-        "setsLost": 5,
+        "setsLost": 7,
         "isLocal": true
     },
     {

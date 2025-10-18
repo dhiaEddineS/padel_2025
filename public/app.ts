@@ -91,6 +91,35 @@ async function showLeagueStats() {
         }
     }
 
+    // Fonction pour calculer la plus longue série sans victoire d'un joueur (les nuls comptent)
+    function getMaxWinlessStreak(playerId: string) {
+        const playerMatches = (allMatches as Match[])
+            .filter((m: Match) => [...m.team1, ...m.team2].includes(playerId))
+            .sort((a: Match, b: Match) => a.id - b.id);
+        let maxStreak = 0, currentStreak = 0;
+        for (const m of playerMatches) {
+            // victoire décisive -> reset
+            if (m.winners && m.winners.includes(playerId) && m.score !== '1-1') {
+                currentStreak = 0;
+            } else {
+                // nul ou défaite compte comme "sans victoire"
+                currentStreak++;
+                maxStreak = Math.max(maxStreak, currentStreak);
+            }
+        }
+        return maxStreak;
+    }
+
+    // Calculer la pire série sans victoire pour chaque joueur
+    let worstWinless = 0;
+    let worstWinlessPlayer = players[0];
+    for (const p of players) {
+        const streak = getMaxWinlessStreak(p.id.toString());
+        if (streak > worstWinless) {
+            worstWinless = streak;
+            worstWinlessPlayer = p;
+        }
+    }
 
     // Joueur ayant fait le plus de matchs nuls
     let mostDrawsPlayer = players[0];
@@ -153,23 +182,45 @@ async function showLeagueStats() {
     let bestVsBossCount = 0;
     let bestVsBoss: Player | null = null;
 
+    // NOUVEAU : meilleur écart (victoires - défaites) contre le Boss
+    let bestVsBossDiff = -Infinity;
+    let bestVsBossDiffPlayer: Player | null = null;
+    let bestVsBossDiffStats: { wins: number; losses: number } | null = null;
+
     if (bossId) {
         for (const p of players) {
             if (p.id.toString() === bossId) continue;
-            const winsAgainstBoss = (allMatches as Match[])
-                .filter((m: Match) =>
-                    // p et Boss doivent être dans des équipes opposées
-                    (
-                        (m.team1.includes(bossId) && m.team2.includes(p.id.toString())) ||
-                        (m.team2.includes(bossId) && m.team1.includes(p.id.toString()))
-                    )
-                    // p doit être dans winners (et pas de nul)
-                    && m.winners && m.winners.includes(p.id.toString())
-                    && m.score !== '1-1'
-                ).length;
+            const playerId = p.id.toString();
+
+            // matchs contre le Boss
+            const matchesAgainstBoss = (allMatches as Match[]).filter((m: Match) =>
+                (m.team1.includes(bossId) && m.team2.includes(playerId)) ||
+                (m.team2.includes(bossId) && m.team1.includes(playerId))
+            );
+
+            // Ignorer les joueurs qui n'ont eu aucun duel contre le Boss
+            if (matchesAgainstBoss.length === 0) continue;
+
+            const winsAgainstBoss = matchesAgainstBoss
+                .filter(m => m.winners && m.winners.includes(playerId) && m.score !== '1-1')
+                .length;
+
+            const lossesAgainstBoss = matchesAgainstBoss
+                .filter(m => m.winners && m.winners.includes(bossId) && m.score !== '1-1')
+                .length;
+
+            // maj du compteur simple déjà présent
             if (winsAgainstBoss > bestVsBossCount) {
                 bestVsBossCount = winsAgainstBoss;
                 bestVsBoss = p;
+            }
+
+            // calcul du meilleur écart (wins - losses)
+            const diff = winsAgainstBoss - lossesAgainstBoss;
+            if (diff > bestVsBossDiff) {
+                bestVsBossDiff = diff;
+                bestVsBossDiffPlayer = p;
+                bestVsBossDiffStats = { wins: winsAgainstBoss, losses: lossesAgainstBoss };
             }
         }
     }
@@ -190,7 +241,9 @@ async function showLeagueStats() {
                 <span class='league-stats-label'>Meilleure série de victoires :</span> <span class='league-stats-player'>${bestPlayer.name}</span> <span class='league-stats-count'>(${bestStreak})</span>
             </div>
             <div class='league-stats-content'>
-                <span class='league-stats-label'>Pire série de défaites :</span> <span class='league-stats-player'>${worstPlayer.name}</span> <span class='league-stats-count'>(${worstStreak})</span>
+                <span class='league-stats-label'>Pire série sans victoire :</span>
+                <span class='league-stats-player'>${worstWinlessPlayer.name}</span>
+                <span class='league-stats-count'>(${worstWinless})</span>
             </div>
             <div class='league-stats-content'>
                 <span class='league-stats-label'>Roi du match nul :</span> <span class='league-stats-player'>${mostDrawsPlayer.name}</span> <span class='league-stats-count'>(${mostDraws})</span>
@@ -202,9 +255,9 @@ async function showLeagueStats() {
                 <span class='league-stats-label'>Recordman des défaites 2-0 :</span> <span class='league-stats-player'>${mostLost20Player.name}</span> <span class='league-stats-count'>(${mostLost20})</span>
             </div>
             <div class='league-stats-content'>
-                <span class='league-stats-label'>Record victoires vs le Boss :</span>
-                <span class='league-stats-player'>${bestVsBoss ? bestVsBoss.name : 'Aucun'}</span>
-                <span class='league-stats-count'>(${bestVsBossCount})</span>
+                <span class='league-stats-label'>Meilleur en duel vs le Boss :</span>
+                <span class='league-stats-player'>${bestVsBossDiffPlayer ? bestVsBossDiffPlayer.name : 'Aucun'}</span>
+                <span class='league-stats-count'>${bestVsBossDiffStats ? (bestVsBossDiff > 0 ? '+' : '') + ' (' + bestVsBossDiffStats.wins + '-' + bestVsBossDiffStats.losses + ')' : ''}</span>
             </div>
         `;
     }

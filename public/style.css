@@ -137,10 +137,6 @@ html, body {
 
 .panel-content.open {
     max-height: 200px; /* assez grand pour ton texte */
-
-    p {
-      font-family: cursive;
-    }
 }
 
 
@@ -189,11 +185,6 @@ tbody tr:nth-child(even) {
 tbody td {
   padding: 10px;
   color: #111827;
-}
-
-tbody tr:hover {
-  background-color: #e0f2fe;
-  transition: 0.2s;
 }
 
 /* Première colonne (position) centrée */
@@ -361,7 +352,7 @@ select, input[type="text"], textarea {
     border-radius: 16px;
     box-shadow: 0 2px 12px #0002;
     overflow: hidden;
-    font-family: 'Comic Sans MS', cursive, sans-serif;
+    // font-family: 'Comic Sans MS', cursive, sans-serif;
 }
 
 #rankingTable th, #rankingTable td {
@@ -392,11 +383,6 @@ select, input[type="text"], textarea {
     transition: background 0.2s;
 }
 
-#rankingTable tr:hover td {
-    background: #ffa99f44;
-    color: #ff5e57;
-}
-
 #rankingTable tr:first-child th {
     border-top-left-radius: 16px;
     border-top-right-radius: 16px;
@@ -408,7 +394,6 @@ select, input[type="text"], textarea {
     margin: 32px auto;
     max-width: 600px;
     padding: 18px 24px;
-    font-family: 'Comic Sans MS', cursive, sans-serif;
 }
 
 .panel-header {
@@ -425,7 +410,6 @@ select, input[type="text"], textarea {
     font-size: 1.15rem;
     color: black;
     line-height: 1.7;
-    padding: 8px 0;
 }
 
 .panel-content .regles {
@@ -503,7 +487,6 @@ select, input[type="text"], textarea {
     padding: 28px 24px;
     max-width: 600px;
     margin: 24px auto;
-    font-family: 'Comic Sans MS', cursive, sans-serif;
     display: flex;
     flex-direction: column;
     gap: 16px;

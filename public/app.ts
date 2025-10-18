@@ -1,5 +1,3 @@
-
-
 // Statistiques Ligue
 
 async function showLeagueStats() {
@@ -351,7 +349,7 @@ async function loadRanking(): Promise<void> {
         }).join('');
 
         html += `
-            <tr ${p.isLocal ? 'style="background-color:#d1ffd1"' : ""}>
+            <tr data-player-id="${p.id}" ${p.isLocal ? 'style="background-color:#d1ffd1"' : ""}>
                 <td>${index + 1}</td>
                 <td class="player">${p.name}</td>
                 <td class="P">${Math.floor(p.points)}</td>
@@ -367,6 +365,22 @@ async function loadRanking(): Promise<void> {
 
     html += `</tbody></table>`;
     container.innerHTML = html;
+
+    // Attacher le handler click pour ouvrir la fiche joueur (plein écran)
+    // chaque ligne possède maintenant data-player-id
+    const rows = container.querySelectorAll("tr[data-player-id]");
+    rows.forEach(row => {
+        row.addEventListener("click", () => {
+            const id = row.getAttribute("data-player-id");
+            const pl = players.find(p => p.id.toString() === id);
+            if (pl) {
+                showPlayerProfile(pl, allMatches);
+            }
+        });
+        // pointeur visuel
+        (row as HTMLElement).style.cursor = "pointer";
+    });
+
 }
 
 // Appel au chargement
@@ -657,6 +671,19 @@ function setupFormValidation() {
     validate();
 }
 
+function getPlayerNames(ids: (number | string)[], players: Player[]): string[] {
+    return ids
+        // .filter(id => typeof id == 'number')
+        .map(id => {
+            if (typeof id === 'string' && id.endsWith("_custom")) {
+                return id.replace("_custom", "");
+            } else {
+                const player = players.find(p => p.id == id);
+                return player ? player.name : 'inconnu';
+            }
+        });
+}
+
 async function loadMatches(): Promise<void> {
     const res = await fetch("/matches");
     const matches: Match[] = await res.json();
@@ -678,20 +705,9 @@ async function loadMatches(): Promise<void> {
     matches.slice().reverse().forEach(match => {
         const div = document.createElement("div");
         div.className = "match-item";
-        const getPlayerNames = (ids: (number | string)[]) => ids
-            // .filter(id => typeof id == 'number')
-            .map(id => {
-                if (typeof id === 'string' && id.endsWith("_custom")) {
-                    return id.replace("_custom", "")
-                }
-                else {
-                    const player = players.find(p => p.id == id);
-                    return player ? player.name : 'inconnu';
-                }
 
-        });
-        const namesTeam1 = getPlayerNames(match.team1).join(", ");
-        const namesTeam2 = getPlayerNames(match.team2).join(", ");
+        const namesTeam1 = getPlayerNames(match.team1 , players).join(", ");
+        const namesTeam2 = getPlayerNames(match.team2, players).join(", ");
 
 
         // Affichage simple : team1 vs team2
@@ -728,3 +744,74 @@ document.addEventListener("DOMContentLoaded", () => {
         }
     });
 });
+
+// --- Nouveau : modal plein écran pour la fiche joueur ---
+function ensurePlayerModal() {
+	// n'ajoute qu'une seule fois
+	if (document.getElementById("playerProfileModal")) return;
+	const modal = document.createElement("div");
+	modal.id = "playerProfileModal";
+	modal.style.cssText = `
+		position:fixed;top:0;left:0;width:100%;height:100%;
+		background:rgba(0,0,0,0.85);color:#fff;z-index:9999;
+		display:none;align-items:center;justify-content:center;padding:20px;box-sizing:border-box;
+	`;
+	modal.innerHTML = `
+		<div id="playerProfileContent" style="background:#0b0b0b;padding:24px;border-radius:6px;max-width:900px;width:100%;max-height:90%;overflow:auto;">
+			<button id="playerProfileClose" style="float:right;background:#222;border:none;color:#fff;padding:6px 10px;border-radius:4px;cursor:pointer;">Fermer ✕</button>
+			<div id="playerProfileBody"></div>
+		</div>
+	`;
+	document.body.appendChild(modal);
+
+	document.getElementById("playerProfileClose")!.addEventListener("click", () => {
+		modal.style.display = "none";
+	});
+	document.addEventListener("keydown", (e) => {
+		if (e.key === "Escape") modal.style.display = "none";
+	});
+}
+
+async function showPlayerProfile(player: Player, matches: Match[]) {
+    ensurePlayerModal();
+    const modal = document.getElementById("playerProfileModal") as HTMLElement;
+    const body = document.getElementById("playerProfileBody") as HTMLElement;
+
+    const players = await loadPlayers();
+
+    // player basic info
+    const playerMatches = matches
+        .filter(m => [...m.team1, ...m.team2].includes(player.id.toString()))
+        .slice(-10); // derniers 10 matchs
+
+    const lastResultsHtml = playerMatches.slice().reverse().map(m => {
+        const team1 = getPlayerNames(m.team1, players).join(", ");
+        const team2 = getPlayerNames(m.team2, players).join(", ");
+        let result = m.score;
+        let winnerSide = m.winners && m.winners.some(w => m.team1.includes(w)) ? 1 : (m.winners && m.winners.some(w => m.team2.includes(w)) ? 2 : 0);
+        // highlight player's side
+        const playerSide = m.team1.includes(player.id.toString()) ? 1 : 2;
+        const mark = m.score === '1-1' ? '<span style="color:orange">Nul</span>' : (winnerSide === playerSide ? '<span style="color:lightgreen">Victoire</span>' : '<span style="color:#ff7b7b">Défaite</span>');
+        return `<div style="padding:8px 0;border-bottom:1px solid rgba(255,255,255,0.06)">
+            <div style="font-size:0.95em">${team1} <strong style="margin:0 8px">${result}</strong> ${team2}</div>
+            <div style="font-size:0.85em;color:#ddd">${mark} — détails: ${m.comment || '—'}</div>
+        </div>`;
+    }).join("");
+
+    body.innerHTML = `
+        <h2 style="margin:0 0 8px 0">${player.name}</h2>
+        <div style="display:flex;gap:12px;flex-wrap:wrap;margin-bottom:12px">
+            <div>Pts: <strong>${Math.floor(player.points)}</strong></div>
+            <div>MJ: <strong>${player.matchesPlayed}</strong></div>
+            <div>V-L: <strong>${player.wins}-${player.losses}</strong></div>
+            <div>Nuls: <strong>${player.draws || 0}</strong></div>
+            <div>Sets: <strong>${player.setsWon}:${player.setsLost}</strong></div>
+        </div>
+        <div style="margin-bottom:12px">
+            <h3 style="margin:0 0 6px 0;font-size:1em">Derniers matchs</h3>
+            <div style="font-size:0.95em">${lastResultsHtml || '<div>Aucun match</div>'}</div>
+        </div>
+    `;
+
+    modal.style.display = "flex";
+}

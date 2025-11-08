@@ -784,6 +784,34 @@ async function showPlayerProfile(player: Player, matches: Match[]) {
         .filter(m => [...m.team1, ...m.team2].includes(player.id.toString()))
         .slice(-10); // derniers 10 matchs
 
+    // --- Nouveau : calcul du duel vs Le Boss (sans les nuls) ---
+    const boss = players.find(p => p.name === "Le Boss");
+    let duelHtml = '';
+    if (boss && player.id.toString() !== boss.id.toString()) {
+        const pid = player.id.toString();
+        const bid = boss.id.toString();
+        const duels = matches.filter(m =>
+            (
+                (m.team1.includes(bid) && m.team2.includes(pid)) ||
+                (m.team2.includes(bid) && m.team1.includes(pid))
+            )
+            && m.score !== '1-1' // exclure les nuls
+        );
+        const winsAgainstBoss = duels.filter(m => m.winners && m.winners.includes(pid)).length;
+        const lossesAgainstBoss = duels.filter(m => m.winners && m.winners.includes(bid)).length;
+        const diff = winsAgainstBoss - lossesAgainstBoss;
+        const color = diff > 0 ? '#6ee7b7' /* vert */ : (diff < 0 ? '#ff7b7b' /* rouge */ : 'orange' /* nul */);
+        duelHtml = `
+            <div style="margin-bottom:12px">
+                <span style="margin:0 0 6px 0;font-size:1em">vs Boss:</span>
+                <span style="font-size:0.95em">
+                    <span style="color:${color};font-weight:800">${winsAgainstBoss} - ${lossesAgainstBoss}</span>
+                </span>
+            </div>
+        `;
+    }
+    // si c'est le Boss ou Boss introuvable, duelHtml reste vide
+
     const lastResultsHtml = playerMatches.slice().reverse().map(m => {
         const team1 = getPlayerNames(m.team1, players).join(", ");
         const team2 = getPlayerNames(m.team2, players).join(", ");
@@ -803,10 +831,11 @@ async function showPlayerProfile(player: Player, matches: Match[]) {
         <div style="display:flex;gap:12px;flex-wrap:wrap;margin-bottom:12px">
             <div>Pts: <strong>${Math.floor(player.points)}</strong></div>
             <div>MJ: <strong>${player.matchesPlayed}</strong></div>
-            <div>V-L: <strong>${player.wins}-${player.losses}</strong></div>
+            <div>V-D: <strong>${player.wins}-${player.losses}</strong></div>
             <div>Nuls: <strong>${player.draws || 0}</strong></div>
             <div>Sets: <strong>${player.setsWon}:${player.setsLost}</strong></div>
         </div>
+        ${duelHtml}
         <div style="margin-bottom:12px">
             <h3 style="margin:0 0 6px 0;font-size:1em">Derniers matchs</h3>
             <div style="font-size:0.95em">${lastResultsHtml || '<div>Aucun match</div>'}</div>

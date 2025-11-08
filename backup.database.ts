@@ -340,6 +340,74 @@ export const defaultMatches : Match[] = [
             "Niv5_custom"
         ],
         "comment": "6-0 6-0 6-0 Partie héroïque à Lubumbashi"
+    },
+        {
+        "id": 21,
+        "team1": [
+            "1",
+            "3"
+        ],
+        "team2": [
+            "5",
+            "Paul5_custom"
+        ],
+        "score": "2-1",
+        "winners": [
+            "1",
+            "3"
+        ],
+        "comment": "2-6 6-0 6-1 Idriss homme du match"
+    },
+    {
+        "id": 22,
+        "team1": [
+            "1",
+            "8"
+        ],
+        "team2": [
+            "5",
+            "Paul5_custom"
+        ],
+        "score": "2-0",
+        "winners": [
+            "1",
+            "8"
+        ],
+        "comment": "6-4 6-3 Bon match"
+    },
+    {
+        "id": 23,
+        "team1": [
+            "5",
+            "Damien6_custom"
+        ],
+        "team2": [
+            "1",
+            "8"
+        ],
+        "score": "2-1",
+        "winners": [
+            "5",
+            "Damien6_custom"
+        ],
+        "comment": "6-1 2-6 6-2 Bon rendement vs Federer"
+    },
+    {
+        "id": 24,
+        "team1": [
+            "6",
+            "Damien6_custom"
+        ],
+        "team2": [
+            "1",
+            "8"
+        ],
+        "score": "2-1",
+        "winners": [
+            "6",
+            "Damien6_custom"
+        ],
+        "comment": "2-6 7-6 6-0 Match sans enjeu (bchal)"
     }
 ];
 
@@ -347,13 +415,13 @@ export const defaultPlayers: Player[] = [
     {
         "id": 1,
         "name": "Le Boss",
-        "matchesPlayed": 13,
-        "points": 15.5,
-        "wins": 9,
-        "losses": 3,
+        "matchesPlayed": 17,
+        "points": 18.5,
+        "wins": 11,
+        "losses": 5,
         "draws": 1,
-        "setsWon": 19,
-        "setsLost": 10,
+        "setsWon": 25,
+        "setsLost": 15,
         "isLocal": true
     },
     {
@@ -371,13 +439,13 @@ export const defaultPlayers: Player[] = [
     {
         "id": 3,
         "name": "Idriss",
-        "matchesPlayed": 7,
-        "points": 7,
-        "wins": 4,
+        "matchesPlayed": 8,
+        "points": 8,
+        "wins": 5,
         "losses": 3,
         "draws": 0,
-        "setsWon": 8,
-        "setsLost": 7,
+        "setsWon": 10,
+        "setsLost": 8,
         "isLocal": true
     },
     {
@@ -395,25 +463,25 @@ export const defaultPlayers: Player[] = [
     {
         "id": 5,
         "name": "Walid",
-        "matchesPlayed": 16,
-        "points": 10,
-        "wins": 5,
-        "losses": 9,
+        "matchesPlayed": 19,
+        "points": 11,
+        "wins": 6,
+        "losses": 11,
         "draws": 2,
-        "setsWon": 15,
-        "setsLost": 21,
+        "setsWon": 18,
+        "setsLost": 26,
         "isLocal": true
     },
     {
         "id": 6,
         "name": "Said",
-        "matchesPlayed": 7,
-        "points": 4.5,
-        "wins": 3,
+        "matchesPlayed": 8,
+        "points": 5.5,
+        "wins": 4,
         "losses": 3,
         "draws": 1,
-        "setsWon": 9,
-        "setsLost": 9,
+        "setsWon": 11,
+        "setsLost": 10,
         "isLocal": true
     },
     {
@@ -431,13 +499,13 @@ export const defaultPlayers: Player[] = [
     {
         "id": 8,
         "name": "Farouk",
-        "matchesPlayed": 7,
-        "points": 4,
-        "wins": 2,
-        "losses": 3,
+        "matchesPlayed": 10,
+        "points": 6,
+        "wins": 3,
+        "losses": 5,
         "draws": 2,
-        "setsWon": 6,
-        "setsLost": 9,
+        "setsWon": 10,
+        "setsLost": 13,
         "isLocal": true
     }
 ];

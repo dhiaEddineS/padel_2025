@@ -334,8 +334,9 @@ async function loadRanking(): Promise<void> {
     `;
 
     players.forEach((p, index) => {
-        const winRate = p.matchesPlayed > 0 ? ((p.wins / p.matchesPlayed) * 100).toFixed(0) : '0';
-        const setDifference = p.setsWon - p.setsLost;
+        const draws = p.draws || 0;
+        const effectivePlayed = Math.max(0, p.matchesPlayed - draws);
+        const winRate = effectivePlayed > 0 ? ((p.wins / effectivePlayed) * 100).toFixed(0) : '0';
 
         // Récupérer les 3 derniers matchs du joueur
         const playerMatches = allMatches
@@ -805,7 +806,7 @@ async function showPlayerProfile(player: Player, matches: Match[]) {
             <div style="margin-bottom:12px">
                 <span style="margin:0 0 6px 0;font-size:1em">vs Boss:</span>
                 <span style="font-size:0.95em">
-                    <span style="color:${color};font-weight:800">${winsAgainstBoss} - ${lossesAgainstBoss}</span>
+                    <span style="color:${color};">${winsAgainstBoss}-${lossesAgainstBoss}</span>
                 </span>
             </div>
         `;

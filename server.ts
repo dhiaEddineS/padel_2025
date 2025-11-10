@@ -66,8 +66,9 @@ app.post("/matches", (req: Request, res: Response) => {
     [...team1, ...team2]
         .filter(id => !winners.includes(id))
         .forEach(id => {
+            const pointsToAdd = score === '2-0' ? 0 : 0.25;
             const setsWon = score === '2-0' ? 0 : 1;
-            db.prepare("UPDATE players SET losses = losses + 1, setsWon = setsWon + ?, setsLost = setsLost + 2, matchesPlayed = matchesPlayed + 1 WHERE id = ?").run(setsWon, id);
+            db.prepare("UPDATE players SET points = points + ?, losses = losses + 1, setsWon = setsWon + ?, setsLost = setsLost + 2, matchesPlayed = matchesPlayed + 1 WHERE id = ?").run(pointsToAdd,setsWon, id);
         });
 
     res.json({ id: info.lastInsertRowid, team1, team2, score });

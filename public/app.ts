@@ -300,8 +300,11 @@ async function loadRanking(): Promise<void> {
     const allMatches: Match[] = await matchesRes.json();
 
     players.sort((a, b) => {
-        if (b.points !== a.points) {
-            return b.points - a.points;
+        const pointsAverageA = (a.points / a.matchesPlayed);
+        const pointsAverageB = (b.points / b.matchesPlayed);
+
+        if (pointsAverageB !== pointsAverageA) {
+            return pointsAverageB - pointsAverageA;
         }
         const setDiffA = a.setsWon - a.setsLost;
         const setDiffB = b.setsWon - b.setsLost;
@@ -334,6 +337,7 @@ async function loadRanking(): Promise<void> {
     `;
 
     players.forEach((p, index) => {
+        const pointsAverage = (p.points / p.matchesPlayed)*70;
         const draws = p.draws || 0;
         const effectivePlayed = Math.max(0, p.matchesPlayed - draws);
         const winRate = effectivePlayed > 0 ? ((p.wins / effectivePlayed) * 100).toFixed(0) : '0';
@@ -353,7 +357,7 @@ async function loadRanking(): Promise<void> {
             <tr data-player-id="${p.id}" ${p.isLocal ? 'style="background-color:#d1ffd1"' : ""}>
                 <td>${index + 1}</td>
                 <td class="player">${p.name}</td>
-                <td class="P">${Math.floor(p.points)}</td>
+                <td class="P">${pointsAverage.toFixed(1)}</td>
                 <td class="J">${p.matchesPlayed}</td>
                 <td class="V">${p.wins}-${p.losses}</td>
                 <td class="SG">${p.draws}</td>
@@ -813,6 +817,58 @@ async function showPlayerProfile(player: Player, matches: Match[]) {
     }
     // si c'est le Boss ou Boss introuvable, duelHtml reste vide
 
+    // --- NOUVEAU: diagramme linéaire 5 parties (2-0, 2-1, 1-1, 1-2, 0-2) ---
+    // Calculer les comptes sur l'ensemble des matchs du joueur
+    const pid = player.id.toString();
+    const allPlayerMatches = matches.filter(m => [...m.team1, ...m.team2].includes(pid));
+    let win20 = 0, win21 = 0, draw11 = 0, lose12 = 0, lose02 = 0;
+    for (const m of allPlayerMatches) {
+        if (m.score === '1-1') {
+            draw11++;
+            continue;
+        }
+        const playerWon = !!(m.winners && m.winners.includes(pid));
+        if (m.score === '2-0') {
+            if (playerWon) win20++; else lose02++;
+        } else if (m.score === '2-1') {
+            if (playerWon) win21++; else lose12++;
+        }
+    }
+    const total = win20 + win21 + draw11 + lose12 + lose02;
+
+    // Couleurs demandées
+    const c_win20 = '#0b6623'; // vert foncé
+    const c_win21 = '#2e9b4d'; // vert moins foncé
+    const c_draw11 = '#f4c542'; // jaune
+    const c_lose12 = '#ff9a3c'; // orange
+    const c_lose02 = '#c31212ff'; // rouge
+
+    // Si aucun match, afficher 5 segments égaux en gris clair
+    const emptyMode = total === 0;
+
+    const f = (count: number) => emptyMode ? 1 : (count > 0 ? count : 0);
+    const flex1 = f(win20);
+    const flex2 = f(win21);
+    const flex3 = f(draw11);
+    const flex4 = f(lose12);
+    const flex5 = f(lose02);
+
+    const barOpacity = emptyMode ? '0.25' : '1';
+
+    const diagramHtml = `
+        <div style="margin-bottom:12px;">
+            <div style="font-size:0.9em;margin-bottom:6px;color:#ddd">Répartition (2-0 / 2-1 / 1-1 / 1-2 / 0-2)</div>
+            <div style="display:flex;border-radius:6px;overflow:hidden;height:12px;box-shadow:inset 0 0 0 1px rgba(255,255,255,0.02); font-size:0.8em;">
+                <div title="Victoires 2-0: ${win20}" style="flex:${flex1};background:${c_win20};opacity:${barOpacity};height:100%;display:flex;align-items:center;justify-content:center;color:rgba(255,255,255,0.95);font-weight:600;font-size:0.75em">${win20}</div>
+                <div title="Victoires 2-1: ${win21}" style="flex:${flex2};background:${c_win21};opacity:${barOpacity};height:100%;display:flex;align-items:center;justify-content:center;color:rgba(255,255,255,0.95);font-weight:600;font-size:0.75em">${win21}</div>
+                <div title="Nuls 1-1: ${draw11}" style="flex:${flex3};background:${c_draw11};opacity:${barOpacity};height:100%;display:flex;align-items:center;justify-content:center;color:rgba(0,0,0,0.85);font-weight:600;font-size:0.75em">${draw11}</div>
+                <div title="Défaites 1-2: ${lose12}" style="flex:${flex4};background:${c_lose12};opacity:${barOpacity};height:100%;display:flex;align-items:center;justify-content:center;color:rgba(255,255,255,0.95);font-weight:600;font-size:0.75em">${lose12}</div>
+                <div title="Défaites 0-2: ${lose02}" style="flex:${flex5};background:${c_lose02};opacity:${barOpacity};height:100%;display:flex;align-items:center;justify-content:center;color:rgba(255,255,255,0.95);font-weight:600;font-size:0.75em">${lose02}</div>
+            </div>
+        </div>
+    `;
+    // --- FIN diagramme ---
+
     const lastResultsHtml = playerMatches.slice().reverse().map(m => {
         const team1 = getPlayerNames(m.team1, players).join(", ");
         const team2 = getPlayerNames(m.team2, players).join(", ");
@@ -833,10 +889,11 @@ async function showPlayerProfile(player: Player, matches: Match[]) {
             <div>Pts: <strong>${Math.floor(player.points)}</strong></div>
             <div>MJ: <strong>${player.matchesPlayed}</strong></div>
             <div>V-D: <strong>${player.wins}-${player.losses}</strong></div>
-            <div>Nuls: <strong>${player.draws || 0}</strong></div>
+            <div>N: <strong>${player.draws || 0}</strong></div>
             <div>Sets: <strong>${player.setsWon}:${player.setsLost}</strong></div>
         </div>
         ${duelHtml}
+        ${diagramHtml}
         <div style="margin-bottom:12px">
             <h3 style="margin:0 0 6px 0;font-size:1em">Derniers matchs</h3>
             <div style="font-size:0.95em">${lastResultsHtml || '<div>Aucun match</div>'}</div>

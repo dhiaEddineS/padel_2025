@@ -408,6 +408,23 @@ export const defaultMatches : Match[] = [
             "Damien6_custom"
         ],
         "comment": "2-6 7-6 6-0 Match sans enjeu (bchal)"
+    },
+        {
+        "id": 25,
+        "team1": [
+            "1",
+            "8"
+        ],
+        "team2": [
+            "5",
+            "7"
+        ],
+        "score": "2-0",
+        "winners": [
+            "1",
+            "8"
+        ],
+        "comment": "6-3 6-3 Match rapide "
     }
 ];
 
@@ -415,12 +432,12 @@ export const defaultPlayers: Player[] = [
     {
         "id": 1,
         "name": "Le Boss",
-        "matchesPlayed": 17,
-        "points": 18.5,
-        "wins": 11,
+        "matchesPlayed": 18,
+        "points": 20.5,
+        "wins": 12,
         "losses": 5,
         "draws": 1,
-        "setsWon": 25,
+        "setsWon": 27,
         "setsLost": 15,
         "isLocal": true
     },
@@ -434,7 +451,7 @@ export const defaultPlayers: Player[] = [
         "draws": 1,
         "setsWon": 5,
         "setsLost": 1,
-        "isLocal": true
+        "isLocal": false
     },
     {
         "id": 3,
@@ -463,13 +480,13 @@ export const defaultPlayers: Player[] = [
     {
         "id": 5,
         "name": "Walid",
-        "matchesPlayed": 19,
+        "matchesPlayed": 20,
         "points": 11,
         "wins": 6,
-        "losses": 11,
+        "losses": 12,
         "draws": 2,
         "setsWon": 18,
-        "setsLost": 26,
+        "setsLost": 28,
         "isLocal": true
     },
     {
@@ -487,24 +504,24 @@ export const defaultPlayers: Player[] = [
     {
         "id": 7,
         "name": "Haroun",
-        "matchesPlayed": 6,
+        "matchesPlayed": 7,
         "points": 5,
         "wins": 3,
-        "losses": 3,
+        "losses": 4,
         "draws": 0,
         "setsWon": 8,
-        "setsLost": 7,
+        "setsLost": 9,
         "isLocal": true
     },
     {
         "id": 8,
         "name": "Farouk",
-        "matchesPlayed": 10,
-        "points": 6,
-        "wins": 3,
+        "matchesPlayed": 11,
+        "points": 8,
+        "wins": 4,
         "losses": 5,
         "draws": 2,
-        "setsWon": 10,
+        "setsWon": 12,
         "setsLost": 13,
         "isLocal": true
     }

@@ -30,8 +30,6 @@ db.prepare("DELETE FROM sqlite_sequence WHERE name = 'matches'").run();*/
 app.get("/", (req, res) => res.send("Padel API running 🚀"));
 
 
-let matches: Match[] = [];
-
 // Record a new match
 app.post("/matches", (req: Request, res: Response) => {
     console.log('req.body',req.body);

@@ -790,12 +790,33 @@ async function loadMatches(): Promise<void> {
         const namesTeam2 = getPlayerNames(match.team2, players).join(", ");
 
 
-        // Affichage simple : team1 vs team2
+        // Si une vidéo est disponible côté match (match.videoUrl) ou dans le mapping local, créer l'iframe
+        const videoUrl = match.videoUrl;
+        let videoHtml = "";
+        if (videoUrl) {
+            console.log('videoUrl', videoUrl);
+            const src = getYouTubeEmbedSrc(videoUrl);
+            // iframe responsif simple (max-width:100% pour s'adapter)
+            videoHtml = `
+                <div style="margin-top:8px;">
+                    <iframe
+                        src="${src}"
+                        frameborder="0"
+                        allow="accelerometer; autoplay; encrypted-media; gyroscope; picture-in-picture"
+                        allowfullscreen
+                        style="width:100%;max-width:700px;height:120px;border-radius:6px;">
+                    </iframe>
+                </div>
+            `;
+        }
+
+        // Affichage simple : team1 vs team2 + vidéo si présente
         div.innerHTML = `
-            <strong>Match #${match.id}</strong><br>
+            <strong>J${match.id}</strong><br>
+            ${videoHtml}
             [${namesTeam1}] ⚔️ [${namesTeam2}]<br>
             Score : ${match.score}<br>
-            ${match.comment}<br>
+            ${match.comment || ''}<br>
         `;
 
         container.appendChild(div);
@@ -976,4 +997,14 @@ async function showPlayerProfile(player: PlayerModel, matches: Match[]) {
     `;
 
     modal.style.display = "flex";
+}
+
+
+
+function getYouTubeEmbedSrc(urlOrId: string): string {
+    if (!urlOrId) return '';
+    // tenter d'extraire l'ID depuis une URL YouTube classique ou short link
+    const m = urlOrId.match(/(?:v=|\/embed\/|youtu\.be\/|\/v\/)([A-Za-z0-9_-]{11})/) || urlOrId.match(/^([A-Za-z0-9_-]{11})$/);
+    const id = m ? m[1] : urlOrId;
+    return `https://www.youtube.com/embed/${id}`;
 }

@@ -407,7 +407,8 @@ export const defaultMatches : Match[] = [
             "6",
             "Damien6_custom"
         ],
-        "comment": "2-6 7-6 6-0 Match sans enjeu (bchal)"
+        "comment": "2-6 7-6 6-0 Match sans enjeu (bchal)",
+        "videoUrl": "https://www.youtube.com/watch?v=A2T6_q-vsRU&t=54s"
     },
     {
         "id": 25,
@@ -441,8 +442,9 @@ export const defaultMatches : Match[] = [
             "1",
             "8"
         ],
-        "comment": "7-6 6-7 des vétérans de bon niveau"
-    }
+        "comment": "7-6 6-7 des vétérans de bon niveau",
+        "videoUrl": "https://www.youtube.com/watch?v=871p4CV0fw4"
+    },
 ];
 
 export const defaultPlayers: Player[] = [

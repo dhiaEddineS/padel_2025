@@ -67,7 +67,8 @@ app.get("/matches", (req: Request, res: Response) => {
         team2: JSON.parse(m.team2),
         score: m.score,
         winners: JSON.parse(m.winners || '[]'),
-        comment: m.comment
+        comment: m.comment,
+        videoUrl: m.videoUrl
     }));
     res.json(parsed);
 });

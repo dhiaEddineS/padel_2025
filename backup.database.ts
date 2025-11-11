@@ -409,7 +409,7 @@ export const defaultMatches : Match[] = [
         ],
         "comment": "2-6 7-6 6-0 Match sans enjeu (bchal)"
     },
-        {
+    {
         "id": 25,
         "team1": [
             "1",
@@ -425,6 +425,23 @@ export const defaultMatches : Match[] = [
             "8"
         ],
         "comment": "6-3 6-3 Match rapide "
+    },
+    {
+        "id": 26,
+        "team1": [
+            "1",
+            "8"
+        ],
+        "team2": [
+            "Chris5_custom",
+            "Fran5_custom"
+        ],
+        "score": "1-1",
+        "winners": [
+            "1",
+            "8"
+        ],
+        "comment": "7-6 6-7 des vétérans de bon niveau"
     }
 ];
 
@@ -432,97 +449,41 @@ export const defaultPlayers: Player[] = [
     {
         "id": 1,
         "name": "Le Boss",
-        "matchesPlayed": 18,
-        "points": 21,
-        "wins": 12,
-        "losses": 5,
-        "draws": 1,
-        "setsWon": 27,
-        "setsLost": 15,
         "isLocal": true
     },
     {
         "id": 2,
         "name": "Joy",
-        "matchesPlayed": 3,
-        "points": 4.5,
-        "wins": 2,
-        "losses": 0,
-        "draws": 1,
-        "setsWon": 5,
-        "setsLost": 1,
         "isLocal": false
     },
     {
         "id": 3,
         "name": "Idriss",
-        "matchesPlayed": 8,
-        "points": 8,
-        "wins": 5,
-        "losses": 3,
-        "draws": 0,
-        "setsWon": 10,
-        "setsLost": 8,
         "isLocal": true
     },
     {
         "id": 4,
         "name": "Momo",
-        "matchesPlayed": 10,
-        "points": 5.75,
-        "wins": 4,
-        "losses": 5,
-        "draws": 1,
-        "setsWon": 10,
-        "setsLost": 14,
         "isLocal": true
     },
     {
         "id": 5,
         "name": "Walid",
-        "matchesPlayed": 20,
-        "points": 12,
-        "wins": 6,
-        "losses": 12,
-        "draws": 2,
-        "setsWon": 18,
-        "setsLost": 28,
         "isLocal": true
     },
     {
         "id": 6,
         "name": "Said",
-        "matchesPlayed": 8,
-        "points": 6,
-        "wins": 4,
-        "losses": 3,
-        "draws": 1,
-        "setsWon": 11,
-        "setsLost": 10,
         "isLocal": true
     },
     {
         "id": 7,
         "name": "Haroun",
-        "matchesPlayed": 7,
-        "points": 5.5,
-        "wins": 3,
-        "losses": 4,
-        "draws": 0,
-        "setsWon": 8,
-        "setsLost": 9,
         "isLocal": true
     },
     {
         "id": 8,
         "name": "Farouk",
-        "matchesPlayed": 11,
-        "points": 8.5,
-        "wins": 4,
-        "losses": 5,
-        "draws": 2,
-        "setsWon": 12,
-        "setsLost": 13,
         "isLocal": true
     }
 ];

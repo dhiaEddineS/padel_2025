@@ -2,7 +2,7 @@ import express from 'express';
 import bodyParser from 'body-parser';
 import path from 'path';
 import { Request, Response } from 'express';
-import { Player, Match } from './models/my.model.js';
+import {Match} from './models/my.model.js';
 import {fileURLToPath} from "node:url";
 import db from './database.js';
 
@@ -45,31 +45,6 @@ app.post("/matches", (req: Request, res: Response) => {
     }
     const stmt = db.prepare("INSERT INTO matches (team1, team2, score, winners, comment) VALUES (?, ?, ?, ?, ?)");
     const info = stmt.run(JSON.stringify(team1), JSON.stringify(team2), score, JSON.stringify(winners), comment || '');
-
-    if (score === '1-1') {
-        [...team1, ...team2].forEach(id => {
-            db.prepare("UPDATE players SET draws = draws + 1, points = points + 0.5 , setsWon = setsWon + 1 , setsLost = setsLost + 1 , matchesPlayed = matchesPlayed + 1 WHERE id = ?").run(id);
-        });
-        // res.json(match);
-        res.json({ id: info.lastInsertRowid, team1, team2, score , winners , comment });
-        return;
-    }
-
-    // winners update
-    winners.forEach(id => {
-        const pointsToAdd = score === '2-0' ? 2 : 1;
-        const setsLost = score === '2-0' ? 0 : 1;
-        db.prepare("UPDATE players SET points = points + ?, wins = wins + 1, setsWon = setsWon +2, setsLost = setsLost + ?, matchesPlayed = matchesPlayed + 1 WHERE id = ?").run(pointsToAdd, setsLost, id);
-    });
-
-    // losers update
-    [...team1, ...team2]
-        .filter(id => !winners.includes(id))
-        .forEach(id => {
-            const pointsToAdd = score === '2-0' ? 0 : 0.25;
-            const setsWon = score === '2-0' ? 0 : 1;
-            db.prepare("UPDATE players SET points = points + ?, losses = losses + 1, setsWon = setsWon + ?, setsLost = setsLost + 2, matchesPlayed = matchesPlayed + 1 WHERE id = ?").run(pointsToAdd,setsWon, id);
-        });
 
     res.json({ id: info.lastInsertRowid, team1, team2, score });
 });

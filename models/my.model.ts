@@ -1,6 +1,10 @@
 export interface Player {
     id: number;
     name: string;
+    isLocal? : boolean;
+}
+
+export interface PlayerModel extends Player {
     matchesPlayed: number;
     points: number;
     wins: number;
@@ -8,7 +12,6 @@ export interface Player {
     draws: number;
     setsWon: number;
     setsLost: number;
-    isLocal? : boolean;
     winRate? : number;
 }
 

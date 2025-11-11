@@ -14,13 +14,6 @@ db.prepare(`
 CREATE TABLE IF NOT EXISTS players (
     id INTEGER PRIMARY KEY AUTOINCREMENT,
     name TEXT NOT NULL,
-    matchesPlayed INTEGER DEFAULT 0,
-    points INTEGER DEFAULT 0,
-    wins INTEGER DEFAULT 0,
-    losses INTEGER DEFAULT 0,
-    draws INTEGER DEFAULT 0,
-    setsWon INTEGER DEFAULT 0,
-    setsLost INTEGER DEFAULT 0,
     isLocal BOOLEAN DEFAULT 0
 )
 `).run();
@@ -29,9 +22,9 @@ CREATE TABLE IF NOT EXISTS players (
 // Insérer les joueurs par défaut seulement si la table est vide
 const count = (db.prepare('SELECT COUNT(*) as c FROM players').get()as { c: number }).c;
 if (count === 0) {
-    const insert = db.prepare('INSERT INTO players (id, name, matchesPlayed, points, wins, losses, draws, setsWon, setsLost, isLocal) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?)');
+    const insert = db.prepare('INSERT INTO players (id, name, isLocal) VALUES (?, ?, ?)');
     const insertMany = db.transaction((players: typeof defaultPlayers) => {
-        for (const p of players) insert.run(p.id, p.name, p.matchesPlayed, p.points, p.wins, p.losses, p.draws, p.setsWon, p.setsLost, p.isLocal ? 1 : 0);
+        for (const p of players) insert.run(p.id, p.name, p.isLocal ? 1 : 0);
     });
     insertMany(defaultPlayers);
     console.log('Joueurs par défaut insérés dans la base');

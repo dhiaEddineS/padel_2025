@@ -1,8 +1,8 @@
-// Statistiques Ligue
+import {Match, Player, PlayerModel} from "../models/my.model.js";
 
 async function showLeagueStats() {
 
-    const players = await loadPlayers();
+    const players = await loadPlayerModels();
     if (!players.length) return;
     const matchesRes = await fetch("/matches");
     const allMatches = await matchesRes.json();
@@ -264,7 +264,6 @@ async function showLeagueStats() {
 document.addEventListener("DOMContentLoaded", () => {
     showLeagueStats();
 });
-import {Match, Player} from "../models/my.model.js";
 
 const $ = (id: string) => document.getElementById(id) as HTMLElement;
 const $select = (id: string) => document.getElementById(id) as HTMLSelectElement;
@@ -290,8 +289,8 @@ $select('match-result-global').addEventListener("change", () => {
     }
 });
 
-async function loadRanking(): Promise<void> {
-    const res = await fetch("/players");
+async function loadPlayerModels(): Promise<PlayerModel[]> {
+  const res = await fetch("/players");
     let players: Player[] = await res.json();
     players = players.filter(p => p.isLocal);
 
@@ -299,9 +298,83 @@ async function loadRanking(): Promise<void> {
     const matchesRes = await fetch("/matches");
     const allMatches: Match[] = await matchesRes.json();
 
+    // Construire/mettre à jour les stats locales des players à partir des matchs
+    return players.map(p => {
+        // initialiser player à partir de p pour éviter l'utilisation d'une variable non assignée
+        const player: PlayerModel = p as unknown as PlayerModel;
+        const pid = p.id.toString();
+
+        // init counters
+        let matchesPlayed = 0;
+        let wins = 0;
+        let losses = 0;
+        let draws = 0;
+        let setsWon = 0;
+        let setsLost = 0;
+        let points = 0;
+
+        // tous les matchs où le joueur a participé
+        const pMatches = (allMatches as Match[]).filter(m => m.team1.includes(pid) || m.team2.includes(pid));
+
+        matchesPlayed = pMatches.length;
+
+        for (const m of pMatches) {
+            const score = m.score;
+            const playerWon = !!(m.winners && m.winners.includes(pid));
+
+            if (score === '1-1') {
+                // match nul
+                draws++;
+                points += 0.5;
+                // chaque équipe obtient 1 set
+                setsWon += 1;
+                setsLost += 1;
+            } else if (score === '2-0') {
+                if (playerWon) {
+                    wins++;
+                    points += 2;
+                    setsWon += 2;
+                    setsLost += 0;
+                } else {
+                    losses++;
+                    points += 0;
+                    setsWon += 0;
+                    setsLost += 2;
+                }
+            } else if (score === '2-1') {
+                if (playerWon) {
+                    wins++;
+                    points += 1;
+                    setsWon += 2;
+                    setsLost += 1;
+                } else {
+                    losses++;
+                    points += 0.25;
+                    setsWon += 1;
+                    setsLost += 2;
+                }
+            }
+        }
+
+        // appliquer les résultats au player model
+        player.matchesPlayed = matchesPlayed;
+        player.wins = wins;
+        player.losses = losses;
+        player.draws = draws;
+        player.setsWon = setsWon;
+        player.setsLost = setsLost;
+        player.points = points;
+
+        return player;
+    });
+}
+
+async function loadRanking(): Promise<void> {
+    const players = await loadPlayerModels();
+
     players.sort((a, b) => {
-        const pointsAverageA = (a.points / a.matchesPlayed);
-        const pointsAverageB = (b.points / b.matchesPlayed);
+    const pointsAverageA = (a.points / a.matchesPlayed);
+    const pointsAverageB = (b.points / b.matchesPlayed);
 
         if (pointsAverageB !== pointsAverageA) {
             return pointsAverageB - pointsAverageA;
@@ -313,6 +386,8 @@ async function loadRanking(): Promise<void> {
         }
         return a.matchesPlayed - b.matchesPlayed;
     });
+    const matchesRes = await fetch("/matches");
+    const allMatches: Match[] = await matchesRes.json();
 
     // Génération du tableau HTML
     const container = document.getElementById("rankingTable");
@@ -777,12 +852,12 @@ function ensurePlayerModal() {
 	});
 }
 
-async function showPlayerProfile(player: Player, matches: Match[]) {
+async function showPlayerProfile(player: PlayerModel, matches: Match[]) {
     ensurePlayerModal();
     const modal = document.getElementById("playerProfileModal") as HTMLElement;
     const body = document.getElementById("playerProfileBody") as HTMLElement;
 
-    const players = await loadPlayers();
+    const players = await loadPlayerModels();
 
     // player basic info
     const playerMatches = matches

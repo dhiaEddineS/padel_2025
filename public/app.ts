@@ -759,6 +759,7 @@ function getPlayerNames(ids: (number | string)[], players: Player[]): string[] {
                 return id.replace("_custom", "");
             } else {
                 const player = players.find(p => p.id == id);
+                if (player && player.name === 'Le Boss') return 'Boss';
                 return player ? player.name : 'inconnu';
             }
         });
@@ -783,11 +784,11 @@ async function loadMatches(): Promise<void> {
     $("matches-list-title").innerHTML = `Liste des matchs (${matches.length})`;
 
     matches.slice().reverse().forEach(match => {
-        const div = document.createElement("div");
-        div.className = "match-item";
+        const matchItemDiv = document.createElement("div");
+        matchItemDiv.className = "match-item";
 
-        const namesTeam1 = getPlayerNames(match.team1 , players).join(", ");
-        const namesTeam2 = getPlayerNames(match.team2, players).join(", ");
+        const namesTeam1 = getPlayerNames(match.team1 , players).join(",");
+        const namesTeam2 = getPlayerNames(match.team2, players).join(",");
 
 
         // Si une vidéo est disponible côté match (match.videoUrl) ou dans le mapping local, créer l'iframe
@@ -808,18 +809,28 @@ async function loadMatches(): Promise<void> {
                     </iframe>
                 </div>
             `;
-        }
+        };
 
-        // Affichage simple : team1 vs team2 + vidéo si présente
-        div.innerHTML = `
-            <strong>J${match.id}</strong><br>
-            ${videoHtml}
+        const matchDetailsDiv = document.createElement("div");
+        matchDetailsDiv.className = "match-details";
+
+        matchDetailsDiv.innerHTML = `
             [${namesTeam1}] ⚔️ [${namesTeam2}]<br>
             Score : ${match.score}<br>
-            ${match.comment || ''}<br>
+            ${match?.scoreDetails}<br>
+            ${match?.comment || ''}<br>
         `;
 
-        container.appendChild(div);
+        const matchTitle = videoHtml ?  `` : `<strong>J${match.id}</strong><br>`;
+
+        // Affichage simple : team1 vs team2 + vidéo si présente
+        matchItemDiv.innerHTML = `
+            ${matchTitle}
+            ${videoHtml}
+            ${matchDetailsDiv.outerHTML}
+        `;
+
+        container.appendChild(matchItemDiv);
     });
 }
 

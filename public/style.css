@@ -580,3 +580,8 @@ select, input[type="text"], textarea {
     padding-right: 0;
 }
 
+.match-details {
+    margin-left: 10px;
+    font-size: 1rem;
+}
+

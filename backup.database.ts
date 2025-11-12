@@ -16,7 +16,8 @@ export const defaultMatches : Match[] = [
             "1",
             "2"
         ],
-        "comment": "6-4 6-2\nRevanche validée",
+        "scoreDetails": "6-4 6-2",
+        "comment": "Revanche validée"
     },
     {
         "id": 2,
@@ -33,7 +34,8 @@ export const defaultMatches : Match[] = [
             "7",
             "William_custom"
         ],
-        "comment": "non équilibré\nImed vers ligue 2"
+        "scoreDetails": "",
+        "comment": "non équilibré Imed vers ligue 2"
     },
     {
         "id": 3,
@@ -50,7 +52,8 @@ export const defaultMatches : Match[] = [
             "1",
             "6"
         ],
-        "comment": "3-6 6-4 6-1"
+        "scoreDetails": "3-6 6-4 6-1",
+        "comment": ""
     },
     {
         "id": 4,
@@ -67,6 +70,7 @@ export const defaultMatches : Match[] = [
             "3",
             "4"
         ],
+        "scoreDetails": "",
         "comment": ""
     },
     {
@@ -84,7 +88,8 @@ export const defaultMatches : Match[] = [
             "1",
             "3"
         ],
-        "comment": "6-3 6-2 Bon match en général "
+        "scoreDetails": "6-3 6-2",
+        "comment": "Bon match en général"
     },
     {
         "id": 6,
@@ -101,7 +106,8 @@ export const defaultMatches : Match[] = [
             "1",
             "8"
         ],
-        "comment": "4-6 6-3 6-1"
+        "scoreDetails": "4-6 6-3 6-1",
+        "comment": ""
     },
     {
         "id": 7,
@@ -118,7 +124,8 @@ export const defaultMatches : Match[] = [
             "4",
             "6"
         ],
-        "comment": "6-4 2-6 6-2 Match non télévisé "
+        "scoreDetails": "6-4 2-6 6-2",
+        "comment": "Match non télévisé"
     },
     {
         "id": 8,
@@ -135,7 +142,8 @@ export const defaultMatches : Match[] = [
             "1",
             "2"
         ],
-        "comment": "7-6 6-4 Que des fautes"
+        "scoreDetails": "7-6 6-4",
+        "comment": "Que des fautes"
     },
     {
         "id": 9,
@@ -152,7 +160,8 @@ export const defaultMatches : Match[] = [
             "5",
             "7"
         ],
-        "comment": "1-6 6-3 7-5 Revanche et retour de loin"
+        "scoreDetails": "1-6 6-3 7-5",
+        "comment": "Revanche et retour de loin"
     },
     {
         "id": 10,
@@ -169,7 +178,8 @@ export const defaultMatches : Match[] = [
             "5",
             "8"
         ],
-        "comment": "6-4 6-3 adversaire en forme et 1ere défaite pr le Boss"
+        "scoreDetails": "6-4 6-3",
+        "comment": "adversaire en forme et 1ere défaite pr le Boss"
     },
     {
         "id": 11,
@@ -186,7 +196,8 @@ export const defaultMatches : Match[] = [
             "5",
             "7"
         ],
-        "comment": "6-2 6-4 Classico sous tension mais pas de victimes finalement "
+        "scoreDetails": "6-2 6-4",
+        "comment": "Classico sous tension mais pas de victimes finalement"
     },
     {
         "id": 12,
@@ -203,7 +214,8 @@ export const defaultMatches : Match[] = [
             "1",
             "2"
         ],
-        "comment": "6-2 5-7 2-4 Unpopular opinion vérifiée"
+        "scoreDetails": "6-2 5-7 2-4",
+        "comment": "Unpopular opinion vérifiée"
     },
     {
         "id": 13,
@@ -220,7 +232,8 @@ export const defaultMatches : Match[] = [
             "1",
             "4"
         ],
-        "comment": "6-4 7-6"
+        "scoreDetails": "6-4 7-6",
+        "comment": ""
     },
     {
         "id": 14,
@@ -237,7 +250,8 @@ export const defaultMatches : Match[] = [
             "1",
             "3"
         ],
-        "comment": "6-3 7-6 Pari gagné 50 € smash retro vs Momo"
+        "scoreDetails": "6-3 7-6",
+        "comment": "Pari gagné 50 € smash retro vs Momo"
     },
     {
         "id": 15,
@@ -254,7 +268,8 @@ export const defaultMatches : Match[] = [
             "4",
             "8"
         ],
-        "comment": "7-5 3-6 3-3 nul au goût de la défaite "
+        "scoreDetails": "7-5 3-6 3-3",
+        "comment": "Nul au goût de la défaite"
     },
     {
         "id": 16,
@@ -271,7 +286,8 @@ export const defaultMatches : Match[] = [
             "1",
             "4"
         ],
-        "comment": "6-2 3-6 6-4 Partie chaude à l urban"
+        "scoreDetails": "6-2 3-6 6-4",
+        "comment": "Partie chaude à l'urban"
     },
     {
         "id": 17,
@@ -288,13 +304,14 @@ export const defaultMatches : Match[] = [
             "5",
             "3"
         ],
-        "comment": "7-6 6-4 chfbbi en forme victoire méritée "
+        "scoreDetails": "7-6 6-4",
+        "comment": "Chfbbi en forme victoire méritée"
     },
     {
         "id": 18,
         "team1": [
             "5",
-            "Paul_5_custom"
+            "Paul5_custom"
         ],
         "team2": [
             "1",
@@ -303,9 +320,10 @@ export const defaultMatches : Match[] = [
         "score": "2-0",
         "winners": [
             "5",
-            "Paul_5_custom"
+            "Paul5_custom"
         ],
-        "comment": "6-4 6-4 Match à sens unique"
+        "scoreDetails": "6-4 6-4",
+        "comment": "Match à sens unique"
     },
     {
         "id": 19,
@@ -322,7 +340,8 @@ export const defaultMatches : Match[] = [
             "1",
             "6"
         ],
-        "comment": "6-4 6-3 Retour aux victoires"
+        "scoreDetails": "6-4 6-3",
+        "comment": "Retour aux victoires"
     },
     {
         "id": 20,
@@ -339,9 +358,10 @@ export const defaultMatches : Match[] = [
             "Vito_custom",
             "Niv5_custom"
         ],
-        "comment": "6-0 6-0 6-0 Partie héroïque à Lubumbashi"
+        "scoreDetails": "6-0 6-0 6-0",
+        "comment": "Partie héroïque à Lubumbashi"
     },
-        {
+    {
         "id": 21,
         "team1": [
             "1",
@@ -356,7 +376,8 @@ export const defaultMatches : Match[] = [
             "1",
             "3"
         ],
-        "comment": "2-6 6-0 6-1 Idriss homme du match"
+        "scoreDetails": "2-6 6-0 6-1",
+        "comment": "Idriss homme du match"
     },
     {
         "id": 22,
@@ -373,7 +394,8 @@ export const defaultMatches : Match[] = [
             "1",
             "8"
         ],
-        "comment": "6-4 6-3 Bon match"
+        "scoreDetails": "6-4 6-3",
+        "comment": "Bon match"
     },
     {
         "id": 23,
@@ -390,7 +412,8 @@ export const defaultMatches : Match[] = [
             "5",
             "Damien6_custom"
         ],
-        "comment": "6-1 2-6 6-2 Bon rendement vs Federer"
+        "scoreDetails": "6-1 2-6 6-2",
+        "comment": "Bon rendement vs Federer"
     },
     {
         "id": 24,
@@ -407,7 +430,8 @@ export const defaultMatches : Match[] = [
             "6",
             "Damien6_custom"
         ],
-        "comment": "2-6 7-6 6-0 Match sans enjeu (bchal)",
+        "scoreDetails": "2-6 7-6 6-0",
+        "comment": "Match sans enjeu (bchal)",
         "videoUrl": "https://www.youtube.com/watch?v=A2T6_q-vsRU&t=54s"
     },
     {
@@ -425,7 +449,8 @@ export const defaultMatches : Match[] = [
             "1",
             "8"
         ],
-        "comment": "6-3 6-3 Match rapide "
+        "scoreDetails": "6-3 6-3",
+        "comment": "Match rapide"
     },
     {
         "id": 26,
@@ -442,9 +467,10 @@ export const defaultMatches : Match[] = [
             "1",
             "8"
         ],
-        "comment": "7-6 6-7 des vétérans de bon niveau",
+        "scoreDetails": "3-6 6-4 4-4",
+        "comment": "Des vétérans de bon niveau",
         "videoUrl": "https://www.youtube.com/watch?v=871p4CV0fw4"
-    },
+    }
 ];
 
 export const defaultPlayers: Player[] = [

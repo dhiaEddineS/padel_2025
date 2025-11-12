@@ -53,16 +53,24 @@ if (!hasVideoUrl) {
 }
 // --- end migration ---
 
+// --- NEW: ensure scoreDetails column exists even if DB was created earlier without it ---
+const hasScoreDetails = matchesInfo.some(col => col.name === 'scoreDetails');
+if (!hasScoreDetails) {
+    // add the new column without touching existing rows
+    db.prepare("ALTER TABLE matches ADD COLUMN scoreDetails TEXT").run();
+    console.log("Migration: ajout de la colonne scoreDetails dans matches");
+}
+// --- end migration ---
+
 // Insérer les matchs par défaut seulement si la table est vide
 const matchCount = (db.prepare('SELECT COUNT(*) as c FROM matches').get() as { c: number }).c;
 if (matchCount === 0) {
-    const insertMatch = db.prepare('INSERT INTO matches (team1, team2, score, winners, comment, videoUrl) VALUES (?, ?, ?, ?, ?, ?)');
+    const insertMatch = db.prepare('INSERT INTO matches (team1, team2, score, winners, scoreDetails, comment, videoUrl) VALUES (?, ?, ?, ?, ?, ?, ?)');
     const insertManyMatches = db.transaction((matches: typeof defaultMatches) => {
-        for (const m of matches) insertMatch.run(JSON.stringify(m.team1), JSON.stringify(m.team2), m.score, JSON.stringify(m.winners), m.comment || '', m.videoUrl || '');
+        for (const m of matches) insertMatch.run(JSON.stringify(m.team1), JSON.stringify(m.team2), m.score, JSON.stringify(m.winners), m.scoreDetails || '', m.comment || '', m.videoUrl || '');
     });
     insertManyMatches(defaultMatches);
     console.log('Matchs par défaut insérés dans la base');
 }
-
 
 export default db;

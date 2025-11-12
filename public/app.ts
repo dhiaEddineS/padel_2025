@@ -817,7 +817,7 @@ async function loadMatches(): Promise<void> {
         matchDetailsDiv.innerHTML = `
             [${namesTeam1}] ⚔️ [${namesTeam2}]<br>
             Score : ${match.score}<br>
-            ${match?.scoreDetails}<br>
+            ${match?.scoreDetails || ''}<br>
             ${match?.comment || ''}<br>
         `;
 

@@ -467,9 +467,45 @@ export const defaultMatches : Match[] = [
             "1",
             "8"
         ],
-        "scoreDetails": "3-6 6-4 4-4",
+        "scoreDetails": "7-6 6-7",
         "comment": "Des vétérans de bon niveau",
         "videoUrl": "https://www.youtube.com/watch?v=871p4CV0fw4"
+    },
+    {
+        "id": 27,
+        "team1": [
+            "7",
+            "5"
+        ],
+        "team2": [
+            "4",
+            "Niv4_custom"
+        ],
+        "score": "2-0",
+        "winners": [
+            "7",
+            "5"
+        ],
+        "comment": "Non télévisé",
+        "scoreDetails": "6-4 7-5"
+    },
+    {
+        "id": 28,
+        "team1": [
+            "1",
+            "4"
+        ],
+        "team2": [
+            "7",
+            "5"
+        ],
+        "score": "2-0",
+        "winners": [
+            "1",
+            "4"
+        ],
+        "comment": "Match rapide",
+        "scoreDetails": "6-3 6-2"
     }
 ];
 

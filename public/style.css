@@ -583,3 +583,7 @@ select, input[type="text"], textarea {
     max-width: 40%;
 }
 
+#plannedMatchFormPanel , #plannedMatchDisplay {
+    margin: auto;
+    width: fit-content;
+}

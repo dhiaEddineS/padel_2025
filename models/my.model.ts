@@ -25,3 +25,12 @@ export interface Match {
     comment?: string;
     videoUrl?: string;
 }
+
+export interface PlannedMatch {
+    id: number;
+    team1: string[];
+    team2: string[];
+    date: string; // format ISO 8601
+    time: string; // format HH:MM
+    location: 'Polygone' | 'Urban';
+}

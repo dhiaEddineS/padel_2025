@@ -2,7 +2,7 @@ import express from 'express';
 import bodyParser from 'body-parser';
 import path from 'path';
 import { Request, Response } from 'express';
-import {Match} from './models/my.model.js';
+import {Match, PlannedMatch} from './models/my.model.js';
 import {fileURLToPath} from "node:url";
 import db from './database.js';
 
@@ -71,6 +71,58 @@ app.get("/matches", (req: Request, res: Response) => {
         videoUrl: m.videoUrl
     }));
     res.json(parsed);
+});
+
+// Stockage des matchs planifiés (remplacer par une vraie DB si nécessaire)
+let plannedMatches: PlannedMatch[] = [];
+let plannedMatchIdCounter = 1;
+
+// Fonction pour nettoyer les matchs planifiés expirés
+function cleanupExpiredMatches() {
+    const now = new Date();
+    const initialCount = plannedMatches.length;
+    
+    plannedMatches = plannedMatches.filter(match => {
+        const matchDateTime = new Date(`${match.date}T${match.time}`);
+        return matchDateTime > now;
+    });
+    
+    const removedCount = initialCount - plannedMatches.length;
+    if (removedCount > 0) {
+        console.log(`🧹 ${removedCount} match(s) planifié(s) expiré(s) supprimé(s)`);
+    }
+}
+
+// Lancer le nettoyage toutes les minutes (60000 ms)
+setInterval(cleanupExpiredMatches, 60000);
+
+// Nettoyage initial au démarrage
+cleanupExpiredMatches();
+
+// Route GET pour récupérer les matchs planifiés
+app.get("/planned-matches", (req, res) => {
+    // Nettoyer avant de retourner la liste
+    cleanupExpiredMatches();
+    res.json(plannedMatches);
+});
+
+// Route POST pour créer un match planifié
+app.post("/planned-matches", (req, res) => {
+    const newPlannedMatch: PlannedMatch = {
+        ...req.body,
+        id: plannedMatchIdCounter++
+    };
+    
+    // Vérifier que la date/heure n'est pas dans le passé
+    const matchDateTime = new Date(`${newPlannedMatch.date}T${newPlannedMatch.time}`);
+    const now = new Date();
+    
+    if (matchDateTime <= now) {
+        return res.status(400).json({ error: "Impossible de planifier un match dans le passé" });
+    }
+    
+    plannedMatches.push(newPlannedMatch);
+    res.status(201).json(newPlannedMatch);
 });
 
 app.listen(4000, () => console.log("🚀 Server running at http://localhost:4000"));

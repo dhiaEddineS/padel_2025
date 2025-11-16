@@ -17,6 +17,48 @@
     </div>
 <br>
 
+
+<div style="text-align:center;margin-top:24px;">
+    <h2>Prochain Match</h2>
+    <button id="showPlannedMatchFormBtn" title="Planifier un match" style="font-size:1.5rem;padding:4px 12px;border-radius:50%;background:#4ade80;color:#fff;border:none;cursor:pointer;">📅</button>
+</div>
+
+<div id="plannedMatchFormPanel" style="display:none;">
+    <form id="plannedMatchForm">
+        <h3>Planifier un match</h3>
+        
+        <label for="matchDate">Date :</label>
+        <input type="date" id="matchDate" required>
+        
+        <label for="matchTime">Heure :</label>
+        <input type="time" id="matchTime" required>
+        
+        <label for="matchLocation">Terrain :</label>
+        <select id="matchLocation" required>
+            <option value="">-- Sélectionner un terrain --</option>
+            <option value="Polygone">Polygone</option>
+            <option value="Urban">Urban</option>
+        </select>
+        
+        <span>Équipe 1</span>
+        <div class="team1">
+            <select id="plannedTeam1Player1"></select>
+            <select id="plannedTeam1Player2"></select>
+        </div>
+        
+        <span>Équipe 2</span>
+        <div class="team2">
+            <select id="plannedTeam2Player1"></select>
+            <select id="plannedTeam2Player2"></select>
+        </div>
+        
+        <input type="password" id="plannedMatchPassword" placeholder="Mot de passe" required>
+        <button id="submitPlannedBtn" type="submit" disabled>Planifier le match</button>
+    </form>
+</div>
+
+<div id="plannedMatchDisplay"></div>
+
 <div id="compare-container">
     <h2>Comparer deux joueurs</h2>
     <select id="comparePlayer1"></select>

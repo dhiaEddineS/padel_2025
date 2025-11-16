@@ -927,6 +927,15 @@ document.addEventListener("DOMContentLoaded", () => {
             panel.style.display = panel.style.display === "none" ? "block" : "none";
         }
     });
+
+    const plannedBtn = document.getElementById("showPlannedMatchFormBtn");
+    const plannedPanel = document.getElementById("plannedMatchFormPanel");
+
+    plannedBtn?.addEventListener("click", () => {
+        if (plannedPanel) {
+            plannedPanel.style.display = plannedPanel.style.display === "none" ? "block" : "none";
+        }
+    });
 });
 
 // --- Nouveau : modal plein écran pour la fiche joueur ---
@@ -1091,3 +1100,180 @@ function getYouTubeEmbedSrc(urlOrId: string): string {
     const id = m ? m[1] : urlOrId;
     return `https://www.youtube.com/embed/${id}`;
 }
+
+// --- Gestion des matchs planifiés --- //
+
+async function populatePlannedMatchSelects() {
+    const players = await loadPlayers();
+
+    const selects = [
+        "plannedTeam1Player1",
+        "plannedTeam1Player2",
+        "plannedTeam2Player1",
+        "plannedTeam2Player2",
+    ];
+
+    selects.forEach(id => {
+        const select = document.getElementById(id) as HTMLSelectElement;
+        select.innerHTML = "";
+
+        const placeholder = document.createElement("option");
+        placeholder.value = "";
+        placeholder.textContent = "-- Sélectionner un joueur --";
+        placeholder.disabled = true;
+        placeholder.selected = true;
+        select.appendChild(placeholder);
+
+        players.forEach(player => {
+            const option = document.createElement("option");
+            option.value = player.id.toString();
+            option.textContent = player.name;
+            select.appendChild(option);
+        });
+
+        const otherOption = document.createElement("option");
+        otherOption.value = "other";
+        otherOption.textContent = "Autre...";
+        select.appendChild(otherOption);
+
+        let customInput = document.getElementById(id + "_custom") as HTMLInputElement;
+        if (!customInput) {
+            customInput = document.createElement("input");
+            customInput.type = "text";
+            customInput.id = id + "_custom";
+            customInput.placeholder = "Entrer un nom de joueur";
+            customInput.style.display = "none";
+            select.insertAdjacentElement("afterend", customInput);
+        }
+
+        select.addEventListener("change", () => {
+            if (select.value === "other") {
+                customInput.style.display = "block";
+            } else {
+                customInput.style.display = "none";
+                customInput.value = "";
+            }
+        });
+    });
+    setupPlannedFormValidation();
+}
+
+function setupPlannedFormValidation() {
+    const form = document.getElementById("plannedMatchForm") as HTMLFormElement;
+    const selects = form.querySelectorAll("select");
+    const inputs = form.querySelectorAll("input[required]:not([type='password'])");
+    const submitBtn = document.getElementById("submitPlannedBtn") as HTMLButtonElement;
+
+    function validate() {
+        const allSelectsFilled = Array.from(selects).every(s => (s as HTMLSelectElement).value !== "");
+        const allInputsFilled = Array.from(inputs).every(i => (i as HTMLInputElement).value !== "");
+        submitBtn.disabled = !(allSelectsFilled && allInputsFilled);
+    }
+
+    selects.forEach(select => {
+        select.addEventListener("change", validate);
+    });
+    inputs.forEach(input => {
+        input.addEventListener("input", validate);
+    });
+
+    validate();
+}
+
+function initPlannedMatchForm() {
+    const form = $("plannedMatchForm") as HTMLFormElement;
+    const passwordInput = $("plannedMatchPassword") as HTMLInputElement;
+    const CORRECT_PASSWORD = "Boss06";
+
+    form.addEventListener("submit", async e => {
+        e.preventDefault();
+
+        if (passwordInput.value !== CORRECT_PASSWORD) {
+            alert("Mot de passe incorrect !");
+            passwordInput.value = "";
+            passwordInput.focus();
+            return;
+        }
+
+        const plannedMatch = {
+            id: 0,
+            team1: [
+                $select("plannedTeam1Player1").value === 'other' ? $select("plannedTeam1Player1_custom").value + '_custom' : $select("plannedTeam1Player1").value,
+                $select("plannedTeam1Player2").value === 'other' ? $select("plannedTeam1Player2_custom").value + '_custom' : $select("plannedTeam1Player2").value
+            ],
+            team2: [
+                $select("plannedTeam2Player1").value === 'other' ? $select("plannedTeam2Player1_custom").value + '_custom' : $select("plannedTeam2Player1").value,
+                $select("plannedTeam2Player2").value === 'other' ? $select("plannedTeam2Player2_custom").value + '_custom' : $select("plannedTeam2Player2").value
+            ],
+            date: ($("matchDate") as HTMLInputElement).value,
+            time: ($("matchTime") as HTMLInputElement).value,
+            location: ($select("matchLocation") as HTMLSelectElement).value as 'Polygone' | 'Urban'
+        };
+
+        const res = await fetch("/planned-matches", {
+            method: "POST",
+            headers: { "Content-Type": "application/json" },
+            body: JSON.stringify(plannedMatch)
+        });
+
+        if (!res.ok) {
+            alert("Erreur lors de l'enregistrement");
+            return;
+        }
+
+        alert("Match planifié avec succès !");
+        form.reset();
+        passwordInput.value = "";
+        await loadPlannedMatch();
+    });
+}
+
+async function loadPlannedMatch(): Promise<void> {
+    const res = await fetch("/planned-matches");
+    const plannedMatches = await res.json();
+
+    const container = document.getElementById("plannedMatchDisplay");
+    if (!container) return;
+
+    container.innerHTML = "";
+
+    if (plannedMatches.length === 0) {
+        container.textContent = "Aucun match planifié.";
+        return;
+    }
+
+    const players = await loadPlayers();
+
+    // Afficher seulement le prochain match (le plus récent)
+    const nextMatch = plannedMatches[plannedMatches.length - 1];
+    
+    const team1Names = getPlayerNames(nextMatch.team1, players).join(", ");
+    const team2Names = getPlayerNames(nextMatch.team2, players).join(", ");
+    
+    const matchDate = new Date(nextMatch.date + 'T' + nextMatch.time);
+    const formattedDate = matchDate.toLocaleDateString('fr-FR', { weekday: 'long', year: 'numeric', month: 'long', day: 'numeric' });
+    const formattedTime = nextMatch.time;
+
+    container.innerHTML = `
+        <div class="planned-match-item" style="padding:20px;border-radius:8px;margin:20px auto;max-width:600px;border-left:4px solid #4ade80;">
+            <div style="font-size:1.2em;font-weight:bold;margin-bottom:12px;color:#4ade80;">📅 Prochain Match</div>
+            <div style="margin-bottom:8px;"><strong>Date :</strong> ${formattedDate}</div>
+            <div style="margin-bottom:8px;"><strong>Heure :</strong> ${formattedTime}</div>
+            <div style="margin-bottom:8px;"><strong>Terrain :</strong> ${nextMatch.location}</div>
+            <div style="margin-top:16px;padding-top:16px;border-top:1px solid rgba(255,255,255,0.1);">
+                <div style="margin-bottom:4px;"><strong>Équipe 1 :</strong> ${team1Names}</div>
+                <div><strong>Équipe 2 :</strong> ${team2Names}</div>
+            </div>
+        </div>
+    `;
+}
+
+document.addEventListener("DOMContentLoaded", async () => {
+    await populateSelects();
+    await populateCompareSelects();
+    await populatePlannedMatchSelects();
+    initForm();
+    initPlannedMatchForm();
+    $("compareBtn")?.addEventListener("click", comparePlayers);
+    await loadPlannedMatch();
+});

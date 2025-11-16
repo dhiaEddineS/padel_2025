@@ -765,6 +765,76 @@ function getPlayerNames(ids: (number | string)[], players: Player[]): string[] {
         });
 }
 
+function formatScoreDetails(match: Match, players: Player[]): string {
+    if (!match.scoreDetails) return '';
+    
+    // Parse scoreDetails (ex: "6-3 4-6 6-4" ou "6-3 6-4")
+    const sets = match.scoreDetails.split(' ').map(s => s.trim());
+    if (sets.length === 0) return '';
+    
+    const team1Names = getPlayerNames(match.team1, players);
+    const team2Names = getPlayerNames(match.team2, players);
+    
+    // Vérifier si c'est un match nul
+    const isDrawMatch = match.score === '1-1';
+    
+    // Icône de set (balle de tennis)
+    const setIcon = '🎾';
+    
+    // Extraire les scores pour chaque équipe avec indication du gagnant
+    const team1ScoresHtml: string[] = [];
+    const team2ScoresHtml: string[] = [];
+    
+    sets.forEach((setScore, index) => {
+        const parts = setScore.split('-');
+        if (parts.length === 2) {
+            const score1 = parseInt(parts[0].trim());
+            const score2 = parseInt(parts[1].trim());
+            
+            // Le 3ème set (index === 2) d'un match nul est en gris
+            const isThirdSetOfDraw = isDrawMatch && index === 2;
+            
+            if (isThirdSetOfDraw) {
+                // Scores en gris pour le 3ème set d'un match nul
+                team1ScoresHtml.push(
+                    `<span style="min-width:28px;text-align:center;font-weight:500;color:#666;">${score1}</span>`
+                );
+                team2ScoresHtml.push(
+                    `<span style="min-width:28px;text-align:center;font-weight:500;color:#666;">${score2}</span>`
+                );
+            } else {
+                // Déterminer le gagnant du set
+                const team1Won = score1 > score2;
+                const team2Won = score2 > score1;
+                
+                // Appliquer vert pour gagnant, noir/gris pour perdant
+                team1ScoresHtml.push(
+                    `<span style="min-width:28px;text-align:center;font-weight:${team1Won ? '900' : '500'};color:${team1Won ? '#4ade80' : 'black'};">${score1}</span>`
+                );
+                team2ScoresHtml.push(
+                    `<span style="min-width:28px;text-align:center;font-weight:${team2Won ? '900' : '500'};color:${team2Won ? '#4ade80' : 'black'};">${score2}</span>`
+                );
+            }
+        }
+    });
+    
+    if (team1ScoresHtml.length === 0) return '';
+    
+    // Générer le HTML moderne avec icône
+    return `
+        <div style="display:inline-block;margin-top:8px;font-size:1em;background:rgba(255,255,255,0.05);padding:10px 8px;border-radius:6px;border-left:3px solid rgba(100,150,255,0.4);">
+            <div style="display:flex;gap:14px;margin-bottom:5px;align-items:center;">
+                <span style="width:110px;text-align:left;font-weight:500;">${team1Names.join(',')}</span>
+                ${team1ScoresHtml.join('')}
+            </div>
+            <div style="display:flex;gap:14px;align-items:center;">
+                <span style="width:110px;text-align:left;font-weight:500;">${team2Names.join(',')}</span>
+                ${team2ScoresHtml.join('')}
+            </div>
+        </div>
+    `;
+}
+
 async function loadMatches(): Promise<void> {
     const res = await fetch("/matches");
     const matches: Match[] = await res.json();
@@ -790,7 +860,6 @@ async function loadMatches(): Promise<void> {
         const namesTeam1 = getPlayerNames(match.team1 , players).join(",");
         const namesTeam2 = getPlayerNames(match.team2, players).join(",");
 
-
         // Si une vidéo est disponible côté match (match.videoUrl) ou dans le mapping local, créer l'iframe
         const videoUrl = match.videoUrl;
         let videoHtml = "";
@@ -799,7 +868,7 @@ async function loadMatches(): Promise<void> {
             const src = getYouTubeEmbedSrc(videoUrl);
             // iframe responsif simple (max-width:100% pour s'adapter)
             videoHtml = `
-                <div style="margin-top:8px;">
+                <div class="match-video" style="margin-bottom:10px;">
                     <iframe
                         src="${src}"
                         frameborder="0"
@@ -814,11 +883,13 @@ async function loadMatches(): Promise<void> {
         const matchDetailsDiv = document.createElement("div");
         matchDetailsDiv.className = "match-details";
 
+        // Utiliser formatScoreDetails pour un affichage moderne
+        const scoreDetailsHtml = formatScoreDetails(match, players);
+
         matchDetailsDiv.innerHTML = `
-            [${namesTeam1}] ⚔️ [${namesTeam2}]<br>
             Score : ${match.score}<br>
-            ${match?.scoreDetails || ''}<br>
-            ${match?.comment || ''}<br>
+            ${scoreDetailsHtml}
+            ${match?.comment ? '<div style="margin-top:8px;font-size:0.88em;color:black;font-style:italic;">' + match.comment + '</div>' : ''}
         `;
 
         const matchTitle = videoHtml ?  `` : `<strong>J${match.id}</strong><br>`;

@@ -717,7 +717,8 @@ function initForm() {
                 $select("team1Player1").value === 'other' ?  $select("team1Player1_custom").value + '_custom' : $select("team1Player1").value,
                 $select("team1Player2").value === 'other' ?  $select("team1Player2_custom").value + '_custom' : $select("team1Player2").value
             ],
-            comment: ($("matchComment") as HTMLInputElement).value
+            comment: ($("matchComment") as HTMLInputElement).value,
+            scoreDetails: ($("scoreDetails") as HTMLInputElement).value
         };
 
         await recordMatch(match);

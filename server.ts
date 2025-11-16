@@ -33,7 +33,7 @@ app.get("/", (req, res) => res.send("Padel API running 🚀"));
 // Record a new match
 app.post("/matches", (req: Request, res: Response) => {
     console.log('req.body',req.body);
-    const { team1, team2, score, winners , comment } = req.body as Match;
+    const { team1, team2, score, winners , comment, scoreDetails } = req.body as Match;
     if (!team1 || !team2) {
         return res.status(400).json({ error: "Les équipes sont invalides" });
     }
@@ -43,8 +43,8 @@ app.post("/matches", (req: Request, res: Response) => {
     if (hasDuplicates) {
         return res.status(400).json({ error: "Un joueur ne peut pas être sélectionné deux fois" });
     }
-    const stmt = db.prepare("INSERT INTO matches (team1, team2, score, winners, comment) VALUES (?, ?, ?, ?, ?)");
-    const info = stmt.run(JSON.stringify(team1), JSON.stringify(team2), score, JSON.stringify(winners), comment || '');
+    const stmt = db.prepare("INSERT INTO matches (team1, team2, score, winners, comment, scoreDetails) VALUES (?, ?, ?, ?, ?, ?)");
+    const info = stmt.run(JSON.stringify(team1), JSON.stringify(team2), score, JSON.stringify(winners), comment || '', scoreDetails || '');
 
     res.json({ id: info.lastInsertRowid, team1, team2, score });
 });

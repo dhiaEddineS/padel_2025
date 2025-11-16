@@ -27,14 +27,14 @@ export const defaultMatches : Match[] = [
         ],
         "team2": [
             "5",
-            "imed_custom"
+            "Imed_custom"
         ],
         "score": "2-0",
         "winners": [
             "7",
             "William_custom"
         ],
-        "scoreDetails": "",
+        "scoreDetails": "6-1 6-2",
         "comment": "non équilibré Imed vers ligue 2"
     },
     {
@@ -70,8 +70,8 @@ export const defaultMatches : Match[] = [
             "3",
             "4"
         ],
-        "scoreDetails": "",
-        "comment": ""
+        "scoreDetails": "6-4 3-6 6-3",
+        "comment": "Non télévisé"
     },
     {
         "id": 5,

@@ -824,11 +824,11 @@ function formatScoreDetails(match: Match, players: Player[]): string {
     return `
         <div style="display:inline-block;margin-top:8px;font-size:1em;background:rgba(255,255,255,0.05);padding:10px 8px;border-radius:6px;border-left:3px solid rgba(100,150,255,0.4);">
             <div style="display:flex;gap:14px;margin-bottom:5px;align-items:center;">
-                <span style="width:110px;text-align:left;font-weight:500;">${team1Names.join(',')}</span>
+                <span style="width:100px;text-align:left;font-weight:500;">${team1Names.join(',')}</span>
                 ${team1ScoresHtml.join('')}
             </div>
             <div style="display:flex;gap:14px;align-items:center;">
-                <span style="width:110px;text-align:left;font-weight:500;">${team2Names.join(',')}</span>
+                <span style="width:100px;text-align:left;font-weight:500;">${team2Names.join(',')}</span>
                 ${team2ScoresHtml.join('')}
             </div>
         </div>

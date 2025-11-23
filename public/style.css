@@ -391,7 +391,7 @@ select, input[type="text"], textarea {
 .panel {
     background: #ffe29f;
     box-shadow: 0 2px 12px #0002;
-    margin: 32px auto;
+    margin: 32px 5px;
     max-width: 600px;
 }
 
@@ -568,6 +568,7 @@ select, input[type="text"], textarea {
 
 .league-stats {
     padding: 10px 0px 10px 5px;
+    margin: 5px;
 }
 
 .match-details {

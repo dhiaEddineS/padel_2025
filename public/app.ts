@@ -429,7 +429,7 @@ async function loadRanking(): Promise<void> {
         }).join('');
 
         html += `
-            <tr data-player-id="${p.id}" ${p.isLocal ? 'style="background-color:#d1ffd1"' : ""}>
+            <tr data-player-id="${p.id}"}>
                 <td>${index + 1}</td>
                 <td class="player">${p.name}</td>
                 <td class="P">${pointsAverage.toFixed(1)}</td>

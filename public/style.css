@@ -437,7 +437,7 @@ select, input[type="text"], textarea {
 }
 
 .match-item {
-    background: linear-gradient(270deg, #ffe29f 20%, #ffe29f33 100%);
+    background: #ffe29f;
     border-radius: 14px;
     box-shadow: 0 2px 8px #0001;
     margin: 12px 2px;

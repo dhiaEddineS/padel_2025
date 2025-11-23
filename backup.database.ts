@@ -506,6 +506,24 @@ export const defaultMatches : Match[] = [
         ],
         "comment": "Match rapide",
         "scoreDetails": "6-3 6-2"
+    },
+    {
+        "id": 29,
+        "team1": [
+            "8",
+            "3"
+        ],
+        "team2": [
+            "1",
+            "Niv4_custom"
+        ],
+        "score": "2-1",
+        "winners": [
+            "8",
+            "3"
+        ],
+        "comment": "Idriss mort",
+        "scoreDetails": "6-1 3-6 6-4"
     }
 ];
 

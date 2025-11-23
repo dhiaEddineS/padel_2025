@@ -389,7 +389,7 @@ select, input[type="text"], textarea {
 }
 
 .panel {
-    background: linear-gradient(90deg, #ffe29f 0%, #ffa99f 100%);
+    background: #ffe29f;
     box-shadow: 0 2px 12px #0002;
     margin: 32px auto;
     max-width: 600px;
@@ -397,12 +397,10 @@ select, input[type="text"], textarea {
 
 .panel-header {
     font-size: 1.5rem;
-    color: #ff5e57;
+    background: #ffb347;
     font-weight: bold;
     text-align: center;
-    margin-bottom: 12px;
     letter-spacing: 2px;
-    text-shadow: 1px 1px 0 #fffbe6;
 }
 
 .panel-content {
@@ -433,7 +431,7 @@ select, input[type="text"], textarea {
 #matchesList {
     max-width: 600px;
     margin: 24px auto;
-    padding: 0;
+    padding: 0 5px 0;
 }
 
 .match-item {
@@ -569,8 +567,7 @@ select, input[type="text"], textarea {
 }
 
 .league-stats {
-    padding-left: 5px;
-    padding-right: 0;
+    padding: 10px 0px 10px 5px;
 }
 
 .match-details {

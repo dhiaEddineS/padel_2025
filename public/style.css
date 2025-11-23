@@ -571,7 +571,7 @@ select, input[type="text"], textarea {
 }
 
 .match-details {
-    margin-left: 10px;
+    margin-left: 5px;
     font-size: 1rem;
     min-width: 50%;
 }

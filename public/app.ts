@@ -854,12 +854,57 @@ async function loadMatches(): Promise<void> {
 
     $("matches-list-title").innerHTML = `Liste des matchs (${matches.length})`;
 
-    matches.slice().reverse().forEach(match => {
+    const reversedMatches = matches.slice().reverse();
+
+    reversedMatches.forEach((match, index) => {
         const matchItemDiv = document.createElement("div");
         matchItemDiv.className = "match-item";
+        matchItemDiv.style.position = "relative";
 
         const namesTeam1 = getPlayerNames(match.team1 , players).join(",");
         const namesTeam2 = getPlayerNames(match.team2, players).join(",");
+
+        // Bouton de suppression - uniquement pour le premier match (le plus récent)
+        if (index === 0) {
+            const deleteBtn = document.createElement("button");
+            deleteBtn.innerHTML = "🗑️";
+            deleteBtn.className = "delete-match-btn";
+            deleteBtn.title = "Supprimer ce match";
+            deleteBtn.style.cssText = `
+                position: absolute;
+                top: 8px;
+                right: 8px;
+                background: rgba(220, 38, 38, 0.9);
+                color: white;
+                border: none;
+                border-radius: 6px;
+                width: 18px;
+                height: 18px;
+                cursor: pointer;
+                font-size: 18px;
+                display: flex;
+                align-items: center;
+                justify-content: center;
+                z-index: 10;
+                transition: all 0.2s;
+                box-shadow: 0 2px 4px rgba(0,0,0,0.2);
+            `;
+            deleteBtn.onmouseover = () => {
+                deleteBtn.style.background = "rgba(185, 28, 28, 1)";
+                deleteBtn.style.transform = "scale(1.1)";
+            };
+            deleteBtn.onmouseout = () => {
+                deleteBtn.style.background = "rgba(220, 38, 38, 0.9)";
+                deleteBtn.style.transform = "scale(1)";
+            };
+            deleteBtn.onclick = (e) => {
+                e.stopPropagation();
+                deleteMatch(match.id);
+            };
+            
+            // Ajouter le bouton après la création du innerHTML
+            setTimeout(() => matchItemDiv.appendChild(deleteBtn), 0);
+        }
 
         // Si une vidéo est disponible côté match (match.videoUrl) ou dans le mapping local, créer l'iframe
         const videoUrl = match.videoUrl;
@@ -867,7 +912,6 @@ async function loadMatches(): Promise<void> {
         if (videoUrl) {
             console.log('videoUrl', videoUrl);
             const src = getYouTubeEmbedSrc(videoUrl);
-            // iframe responsif simple (max-width:100% pour s'adapter)
             videoHtml = `
                 <div class="match-video" style="margin-bottom:10px;">
                     <iframe
@@ -904,6 +948,39 @@ async function loadMatches(): Promise<void> {
 
         container.appendChild(matchItemDiv);
     });
+}
+
+async function deleteMatch(matchId: number): Promise<void> {
+    const CORRECT_PASSWORD = "Boss06";
+    const password = prompt("Attention seul le Boss est autorisé à supprimer les matchs !");
+    
+    if (password !== CORRECT_PASSWORD) {
+        alert("Mot de passe incorrect !");
+        return;
+    }
+    
+    if (!confirm("Êtes-vous sûr de vouloir supprimer ce match ?")) {
+        return;
+    }
+    
+    try {
+        const res = await fetch(`/matches/${matchId}`, {
+            method: "DELETE"
+        });
+        
+        if (!res.ok) {
+            alert("Erreur lors de la suppression");
+            return;
+        }
+        
+        alert("Match supprimé avec succès !");
+        await loadMatches();
+        await loadRanking();
+        await showLeagueStats();
+    } catch (error) {
+        console.error("Erreur:", error);
+        alert("Erreur lors de la suppression");
+    }
 }
 
 document.querySelectorAll(".panel-header").forEach(header => {

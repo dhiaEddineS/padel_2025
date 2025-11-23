@@ -73,6 +73,30 @@ app.get("/matches", (req: Request, res: Response) => {
     res.json(parsed);
 });
 
+// Supprimer un match
+app.delete("/matches/:id", (req: Request, res: Response) => {
+    const matchId = parseInt(req.params.id);
+    
+    if (isNaN(matchId)) {
+        return res.status(400).json({ error: "ID invalide" });
+    }
+    
+    try {
+        const stmt = db.prepare("DELETE FROM matches WHERE id = ?");
+        const result = stmt.run(matchId);
+        
+        if (result.changes === 0) {
+            return res.status(404).json({ error: "Match non trouvé" });
+        }
+        
+        console.log(`🗑️ Match ${matchId} supprimé`);
+        res.json({ success: true, message: "Match supprimé avec succès" });
+    } catch (error) {
+        console.error("Erreur lors de la suppression:", error);
+        res.status(500).json({ error: "Erreur lors de la suppression" });
+    }
+});
+
 // Stockage des matchs planifiés (remplacer par une vraie DB si nécessaire)
 let plannedMatches: PlannedMatch[] = [];
 let plannedMatchIdCounter = 1;

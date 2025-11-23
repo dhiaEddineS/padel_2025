@@ -437,10 +437,10 @@ select, input[type="text"], textarea {
 }
 
 .match-item {
-    background: linear-gradient(90deg, #ffe29f 0%, #a0e7ff 100%);
+    background: linear-gradient(90deg, #ffe29f 0%, #ffe29f33 100%);
     border-radius: 14px;
     box-shadow: 0 2px 8px #0001;
-    margin: 12px 0;
+    margin: 12px 2px;
     padding: 16px 18px;
     display: flex;
     justify-content: space-between;
@@ -448,6 +448,7 @@ select, input[type="text"], textarea {
     font-family: 'Comic Sans MS', cursive, sans-serif;
     font-size: 1.08rem;
     color: black;
+    border: none;
     transition: transform 0.2s, box-shadow 0.2s;
 }
 

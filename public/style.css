@@ -225,7 +225,7 @@ select, input[type="text"], textarea {
 
 /* Comparateur de joueurs */
 #compare-container {
-    background: linear-gradient(90deg, #ffe29f 0%, #ffa99f 100%);
+    background: #ffe29f;
     border-radius: 16px;
     box-shadow: 0 2px 12px #0002;
     padding: 24px;

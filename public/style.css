@@ -204,7 +204,7 @@ td.player {
 
 /* Mettre en avant les points */
 td.P {
-  color: #2563eb;
+  color: #4CAF50;
   font-weight: bold;
 }
 
@@ -395,7 +395,7 @@ select, input[type="text"], textarea {
 .panel {
     background: #ffe29f;
     box-shadow: 0 2px 12px #0002;
-    margin: 32px 5px;
+    margin: 32px auto;
     max-width: 600px;
 }
 
@@ -560,6 +560,10 @@ select, input[type="text"], textarea {
 .league-stats-title {
     margin: 2px 0 8px;
     font-family: 'Segoe UI', 'Arial', 'Helvetica Neue', sans-serif;
+}
+
+.league-stats-title-container {
+    background-color: #ffb347;
 }
 
 .league-stats-label , .league-stats-player , .league-stats-count {

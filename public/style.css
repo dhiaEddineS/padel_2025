@@ -51,7 +51,8 @@ body {
   }
 
 body {
-    margin: 0;
+    margin-right: 5px;
+    margin-left: 5px;
     padding: 0;
 }
 
@@ -97,8 +98,6 @@ table {
 }
 
 html, body {
-  margin: 0;
-  padding: 0;
   min-height: 100%;
   overflow-y: auto; /* permet de scroller verticalement */
 }
@@ -442,7 +441,7 @@ select, input[type="text"], textarea {
     background: #ffe29f;
     border-radius: 14px;
     box-shadow: 0 2px 8px #0001;
-    margin: 12px 2px;
+    margin: 12px 0;
     padding: 16px 18px;
     display: flex;
     justify-content: space-between;
